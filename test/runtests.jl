@@ -1,5 +1,8 @@
 using LightGraphsPersistence
+using LightGraphs
 using Base.Test
 
+testdir = dirname(@__FILE__)
+
 # write your own tests here
-@test 1 == 2
+include("persistence.jl")
