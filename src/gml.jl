@@ -1,3 +1,5 @@
+struct GMLFormat <: AbstractGraphFormat end
+
 function _gml_read_one_graph(gs, dir)
     nodes = [x[:id] for x in gs[:node]]
     if dir
@@ -78,5 +80,8 @@ function savegml_mult(io::IO, graphs::Dict)
     end
     return ng
 end
-
-LightGraphs.filemap[:gml] = (loadgml, loadgml_mult, savegml, savegml_mult)
+loadgraph(io::IO, gname::String, ::GMLFormat) = loadgml(io, gname)
+loadgraphs(io::IO, ::GMLFormat) = loadgml_mult(io)
+savegraph(io::IO, g::AbstractGraph, gname::String, ::GMLFormat) = savegml(io, g, gname)
+savegraph(io::IO, g::AbstractGraph, ::GMLFormat) = savegml(io, g, "graph")
+savegraph(io::IO, d::Dict, ::GMLFormat) = savegml_mult(io, d)

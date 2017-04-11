@@ -1,5 +1,6 @@
 # TODO: implement writing a dict of graphs
 
+struct GraphMLFormat <: AbstractGraphFormat end
 function _graphml_read_one_graph(el::EzXML.Node, isdirected::Bool)
     nodes = Dict{String,Int}()
     xedges = Vector{LightGraphs.Edge}()
@@ -109,4 +110,9 @@ end
 savegraphml(io::IO, g::LightGraphs.AbstractGraph, gname::String) =
     savegraphml_mult(io, Dict(gname=>g))
 
-LightGraphs.filemap[:graphml] = (loadgraphml, loadgraphml_mult, savegraphml, savegraphml_mult)
+
+loadgraph(io::IO, gname::String, ::GraphMLFormat) = loadgraphml(io, gname)
+loadgraphs(io::IO, ::GraphMLFormat) = loadgraphml_mult(io)
+savegraph(io::IO, g::AbstractGraph, gname::String, ::GraphMLFormat) = savegraphml(io, g, gname)
+savegraph(io::IO, g::AbstractGraph, ::GraphMLFormat) = savegraphml(io, g, "graph")
+savegraph(io::IO, d::Dict, ::GraphMLFormat) = savegraphml_mult(io, d)

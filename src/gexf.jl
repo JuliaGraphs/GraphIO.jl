@@ -1,6 +1,6 @@
 
 # TODO: implement readgexf
-
+struct GEXFFormat <: AbstractGraphFormat end
 """
     savegexf(f, g, gname)
 
@@ -41,4 +41,5 @@ function savegexf(io::IO, g::LightGraphs.AbstractGraph, gname::String)
     return 1
 end
 
-LightGraphs.filemap[:gexf] = (NI, NI, savegexf, NI)
+savegraph(io::IO, g::AbstractGraph, gname::String, ::GEXFFormat) = savegexf(io, g, gname)
+savegraph(io::IO, g::AbstractGraph, ::GEXFFormat) = savelg(io, g, "graph")

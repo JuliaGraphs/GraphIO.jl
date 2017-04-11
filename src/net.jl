@@ -1,4 +1,4 @@
-
+struct NETFormat <: AbstractGraphFormat end
 """
     savenet(io, g, gname="g")
 
@@ -65,4 +65,7 @@ end
 
 loadnet_mult(io::IO) = Dict("g" => loadnet(io))
 
-LightGraphs.filemap[:net] = (loadnet, loadnet_mult, savenet, NI)
+loadgraph(io::IO, gname::String, ::NETFormat) = loadnet(io, gname)
+loadgraphs(io::IO, ::NETFormat) = loadnet_mult(io)
+savegraph(io::IO, g::AbstractGraph, gname::String, ::NETFormat) = savenet(io, g, gname)
+savegraph(io::IO, g::AbstractGraph, ::NETFormat) = savenet(io, g, "graph")

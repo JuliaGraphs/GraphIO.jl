@@ -1,3 +1,4 @@
+struct Graph6Format <: AbstractGraphFormat end
 
 function _bv2int(x::BitVector)
   assert(length(x) <= 8 * sizeof(Int))
@@ -70,7 +71,7 @@ end
 
 
 """
-    _graphToG6String(g)
+    \_graphToG6String(g)
 
 Given a graph `g`, create the corresponding Graph6 string.
 """
@@ -106,8 +107,6 @@ function _g6StringToGraph(s::AbstractString)
   end
   return g
 end
-
-
 
 function loadgraph6_mult(io::IO)
   n = 0
@@ -153,5 +152,8 @@ function savegraph6_mult(io::IO, graphs::Dict)
   return ng
 end
 
-
-LightGraphs.filemap[:graph6] = (loadgraph6, loadgraph6_mult, savegraph6, savegraph6_mult)
+loadgraph(io::IO, gname::String, ::Graph6Format) = loadgraph6(io, gname)
+loadgraphs(io::IO, ::Graph6Format) = loadgraph6_mult(io)
+savegraph(io::IO, g::AbstractGraph, gname::String, ::Graph6Format) = savegraph6(io, g, gname)
+savegraph(io::IO, g::AbstractGraph, ::Graph6Format) = savegraph6(io, g, "graph")
+savegraph(io::IO, d::Dict, ::Graph6Format) = savegraph6_mult(io, d)

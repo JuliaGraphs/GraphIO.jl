@@ -1,5 +1,5 @@
 
-
+struct DOTFormat <: AbstractGraphFormat end
 # TODO: implement save
 
 function _dot_read_one_graph(pg::DOT.Graph)
@@ -44,4 +44,5 @@ function loaddot_mult(io::IO)
     return graphs
 end
 
-LightGraphs.filemap[:dot] = (loaddot, loaddot_mult, NI, NI)
+loadgraph(io::IO, gname::String, ::DOTFormat) = loaddot(io, gname)
+loadgraphs(io::IO, ::DOTFormat) = loaddot_mult(io)
