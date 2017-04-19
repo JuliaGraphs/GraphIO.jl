@@ -1,5 +1,5 @@
 __precompile__(true)
-module LightGraphsPersistence
+module GraphIO
 
 using LightGraphs
 

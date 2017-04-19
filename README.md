@@ -1,7 +1,7 @@
-# LightGraphsPersistence
+# GraphIO
 
-[![Build Status](https://travis-ci.org/sbromberger/LightGraphsPersistence.jl.svg?branch=master)](https://travis-ci.org/sbromberger/LightGraphsPersistence.jl)
+[![Build Status](https://travis-ci.org/sbromberger/GraphIO.jl.svg?branch=master)](https://travis-ci.org/sbromberger/GraphIO.jl)
 
-[![Coverage Status](https://coveralls.io/repos/sbromberger/LightGraphsPersistence.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/sbromberger/LightGraphsPersistence.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/sbromberger/GraphIO.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/sbromberger/GraphIO.jl?branch=master)
 
-[![codecov.io](http://codecov.io/github/sbromberger/LightGraphsPersistence.jl/coverage.svg?branch=master)](http://codecov.io/github/sbromberger/LightGraphsPersistence.jl?branch=master)
+[![codecov.io](http://codecov.io/github/sbromberger/GraphIO.jl/coverage.svg?branch=master)](http://codecov.io/github/sbromberger/GraphIO.jl?branch=master)

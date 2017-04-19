@@ -1,5 +1,5 @@
 using LightGraphs
-using LightGraphsPersistence
+using GraphIO
 
     pdict = loadgraphs(joinpath(testdir,"testdata","tutte-pathdigraph.jgz"))
     p1 = pdict["Tutte"]
@@ -16,7 +16,7 @@ using LightGraphsPersistence
         if remove
             rm(fname)
         else
-            info("persistence/readback_test: Left temporary file at: $fname")
+            info("graphio/readback_test: Left temporary file at: $fname")
         end
     end
 
@@ -104,8 +104,8 @@ end
     n3 = (460175067, UInt8.([126; 126; 63; 90; 90; 90; 90; 90]))
     ns = [n1; n2; n3]
     for n in ns
-        @test LightGraphsPersistence._g6_N(n[1]) == n[2]
-        @test LightGraphsPersistence._g6_Np(n[2])[1] == n[1]
+        @test GraphIO._g6_N(n[1]) == n[2]
+        @test GraphIO._g6_Np(n[2])[1] == n[1]
     end
 
     gs = loadgraphs(joinpath(testdir,"testdata", "twographs.g6"), Graph6Format())
@@ -123,7 +123,7 @@ end
     close(fio)
     d = Dict{String, LightGraphs.Graph}("g1"=>CompleteGraph(10), "g2"=>PathGraph(5), "g3" => WheelGraph(7))
     @test savegraph(f,d, Graph6Format()) == 3
-    g6graphs = LightGraphsPersistence.loadgraph6_mult(fio)
+    g6graphs = GraphIO.loadgraph6_mult(fio)
     for (gname, g) in g6graphs
         @test g == d[gnames]
     end
@@ -178,10 +178,10 @@ end
 
     for (i,g) in enumerate(graphs)
         eprop = Dict{LightGraphs.Edge, Char}([(e, Char(i)) for e in LightGraphs.edges(g)])
-        net = LightGraphsPersistence.Network{LightGraphs.Graph, Int, Char}(g, 1:nv(g), eprop)
+        net = GraphIO.Network{LightGraphs.Graph, Int, Char}(g, 1:nv(g), eprop)
         path = joinpath(testdir,"testdata", "test.$i.jld")
         nsaved = write_readback(path, net)
-        @test LightGraphsPersistence.Network(nsaved) == net
+        @test GraphIO.Network(nsaved) == net
         #delete the file (it gets left on test failure so you could debug it)
         rm(path)
     end
