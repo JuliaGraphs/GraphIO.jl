@@ -10,11 +10,18 @@ GraphIO provides support to [LightGraphs.jl](https://github.com/JuliaGraphs/Ligh
 
 Currently, the following functionality is provided:
 
-Format | Read | Write
--------|------|-----
-GML | ✓ | ✓
-Graph6 | ✓ | ✓
-GraphML | ✓ | ✓
-Pajek NET | ✓ | ✓
-GEXF | | ✓
-DOT | ✓ |
+Format        | Read | Write
+--------------|------|------
+[GML]         |   ✓  |  ✓
+[Graph6]      |   ✓  |  ✓
+[GraphML]     |   ✓  |  ✓
+[Pajek NET]   |   ✓  |  ✓
+[GEXF]        |      |  ✓
+[DOT]         |   ✓  |
+
+[GML]: https://en.wikipedia.org/wiki/Graph_Modelling_Language
+[Graph6]: https://users.cecs.anu.edu.au/~bdm/data/formats.html
+[GraphML]: https://en.wikipedia.org/wiki/GraphML
+[Pajek NET]: https://gephi.org/users/supported-graph-formats/pajek-net-format/
+[GEXF]: https://gephi.org/gexf/format/
+[DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
