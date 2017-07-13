@@ -1,100 +1,112 @@
 using LightGraphs
 using GraphIO
 
-    pdict = loadgraphs(joinpath(testdir,"testdata","tutte-pathdigraph.jgz"))
-    p1 = pdict["Tutte"]
-    p2 = pdict["pathdigraph"]
-    g3 = PathGraph(5)
+graphs = Dict{String,Graph}(
+    "graph1"    => CompleteGraph(5), 
+    "graph2"    => PathGraph(6),
+    "graph3"    =>WheelGraph(4)
+    )
+digraphs = Dict{String,DiGraph}(
+    "digraph1"   => CompleteDiGraph(5), 
+    "digraph2"   => PathDiGraph(6),
+    "digraph3"   => WheelDiGraph(4)
+)
+allgraphs = merge(graphs, digraphs)
 
-    function readback_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.Graph, gname="g",
-                           remove=true, fnamefio=mktemp())
-        fname,fio = fnamefio
-        close(fio)
-        @test savegraph(fname, g, format) == 1
-        @test loadgraphs(fname, format)[gname] == g
-        @test loadgraph(fname, gname, format) == g
-        if remove
-            rm(fname)
-        else
-            info("graphio/readback_test: Left temporary file at: $fname")
-        end
+function gettempname()
+    (f, fio) = mktemp()
+    close(fio)
+    return f
+end 
+        
+function read_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname::String="g",
+    fname::AbstractString=""; testfail=false)
+    @test loadgraph(fname, gname, format) == g
+    if testfail
+        @test_throws ErrorException loadgraph(fname, "badgraphXXX", format)
     end
+    @test loadgraphs(fname, format)[gname] == g
+end
 
-    (f,fio) = mktemp()
+function read_test_mult(format::LightGraphs.AbstractGraphFormat, d::Dict{String,G}, fname::AbstractString="") where G<: AbstractGraph
+    rd = loadgraphs(fname, format)
+    @test rd == d
+    
+end
+
+function write_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname::String="g",
+    fname::AbstractString=gettempname(); remove=true, silent=false)
+    @test savegraph(fname, g, gname, format) == 1
+    if remove
+        rm(fname)
+    elseif !silent
+        info("graphio/write_test: Left temporary file at: $fname")
+    end
+end
+
+function write_test(format::LightGraphs.AbstractGraphFormat, d::Dict{String,G},
+    fname::AbstractString=gettempname(); remove=true, silent=false) where G <: LightGraphs.AbstractGraph
+    @test savegraph(fname, d, format) == length(d)
+    if remove
+        rm(fname)
+    elseif !silent
+        info("graphio/write_test: Left temporary file at: $fname")
+    end
+end
+
+function readback_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname="graph",
+                        fname=gettempname(); remove=true, testfail=false)
+    @test savegraph(fname, g, format) == 1
+    @test loadgraphs(fname, format)[gname] == g
+    @test loadgraph(fname, gname, format) == g
+    if testfail
+        @test_throws ErrorException loadgraph(fname, "badgraphXXX", format)
+    end
+    if remove
+        rm(fname)
+    else
+        info("graphio/readback_test: Left temporary file at: $fname")
+    end
+end
+
+
+@testset "EdgeList" begin
+    for g in values(digraphs)
+        readback_test(EdgeListFormat(), g)
+    end
+end
+
 @testset "GraphML" begin
-    # test GraphMLFormat()
-    @test savegraph(f, p1, GraphMLFormat()) == 1
-    gs = loadgraphs(joinpath(testdir, "testdata", "grafo1853.13.graphml"), GraphMLFormat())
-    @test length(gs) == 1
-    @test haskey(gs, "G") #Name of graph
-    graphml_g = gs["G"]
-    @test nv(graphml_g) == 13
-    @test ne(graphml_g) == 15
-    gs = loadgraphs(joinpath(testdir, "testdata", "twounnamedgraphs.graphml"), GraphMLFormat())
-    @test gs["graph"] == LightGraphs.Graph(gs["digraph"])
-    @test savegraph(f, g3, GraphMLFormat()) == 1
-    @test_throws ErrorException loadgraph(joinpath(testdir, "testdata", "twounnamedgraphs.graphml"), "badname", GraphMLFormat())
-    # test a graphml load that results in a warning
-    # redirecting per https://thenewphalls.wordpress.com/2014/03/21/capturing-output-in-julia/
-    origSTDERR = STDERR
-    (outread, outwrite) = redirect_stderr()
-    gs = loadgraphs(joinpath(testdir,"testdata","warngraph.graphml"), GraphMLFormat())
-    gsg = loadgraph(joinpath(testdir,"testdata","warngraph.graphml"), "G", GraphMLFormat())
-    @test_throws KeyError badgraph = loadgraphs(joinpath(testdir, "testdata", "badgraph.graphml"), GraphMLFormat())
-    flush(outread)
-    flush(outwrite)
-    close(outread)
-    close(outwrite)
-    redirect_stderr(origSTDERR)
-    @test gs["G"] == graphml_g == gsg
+    for g in values(allgraphs)
+        readback_test(GraphMLFormat(), g, testfail=true)
+    end
 end
 
 @testset "GML" begin
     # test GMLFormat()
-    gs = loadgraphs(joinpath(testdir,"testdata", "twographs-10-28.gml"), GMLFormat())
-    gml1 = gs["gml1"]
-    gml2 = gs["digraph"]
-    gml1a = loadgraph(joinpath(testdir,"testdata", "twographs-10-28.gml"), "gml1", GMLFormat())
-    @test gml1a == gml1
-    @test nv(gml1) == nv(gml2) == 10
-    @test ne(gml1) == ne(gml2) == 28
-    gml1a = loadgraph(joinpath(testdir,"testdata", "twographs-10-28.gml"), "gml1", GMLFormat())
-    @test gml1a == gml1
-    gs = loadgraphs(joinpath(testdir,"testdata", "twounnamedgraphs.gml"), GMLFormat())
-    gml1 = gs["graph"]
-    gml2 = gs["digraph"]
-    @test nv(gml1) == 4
-    @test ne(gml1) == 6
-    @test nv(gml2) == 4
-    @test ne(gml2) == 9
-    @test_throws ErrorException loadgraph(joinpath(testdir, "testdata", "twounnamedgraphs.gml"), "badname", GMLFormat())
-
-    @test savegraph(f, gml1, GMLFormat()) == 1
-    gml1 = loadgraphs(f, GMLFormat())["graph"]
-    @test nv(gml1) == 4
-    @test ne(gml1) == 6
-
-    gs = loadgraphs(joinpath(testdir,"testdata", "twographs-10-28.gml"), GMLFormat())
-    @test savegraph(f, gs, GMLFormat()) == 2
-    gs = loadgraphs(f, GMLFormat())
-    gml1 = gs["gml1"]
-    gml2 = gs["digraph"]
-    @test nv(gml1) == nv(gml2) == 10
-    @test ne(gml1) == ne(gml2) == 28
+    for g in values(allgraphs)
+        readback_test(GMLFormat(), g, testfail=true)
+    end
+    write_test(GMLFormat(), allgraphs)
 end
 
 @testset "DOT" begin
-    # test DOTFormat()
-    gs = loadgraphs(joinpath(testdir, "testdata", "twographs.dot"), DOTFormat())
-    @test length(gs) == 2
-    @test gs["g1"] == CompleteGraph(6)
-    @test nv(gs["g2"]) == 4 && ne(gs["g2"]) == 6 && is_directed(gs["g2"])
-    @test_throws ErrorException loadgraph(joinpath(testdir, "testdata", "twographs.dot"), "badname", DOTFormat())
+    g = CompleteGraph(6)
+    dg = DiGraph(4)
+    for e in [Edge(1,2), Edge(1,3), Edge(2,2), Edge(2,3), Edge(4,1), Edge(4,3)]
+        add_edge!(dg, e)
+    end
+    fname = joinpath(testdir, "testdata", "twographs.dot")
+    read_test(DOTFormat(), g, "g1", fname, testfail=true)
+    read_test(DOTFormat(), dg, "g2", fname)
+    read_test_mult(DOTFormat(), Dict{String,AbstractGraph}("g1"=>g, "g2"=>dg), fname)
 end
 
 @testset "GEXF" begin
     # test GEXFFormat()
-    @test savegraph(f, p1, GEXFFormat()) == 1
+    for g in values(allgraphs)
+        write_test(GEXFFormat(), g)
+    end
 end
 
 @testset "Graph6" begin
@@ -108,45 +120,21 @@ end
         @test GraphIO._g6_Np(n[2])[1] == n[1]
     end
 
-    gs = loadgraphs(joinpath(testdir,"testdata", "twographs.g6"), Graph6Format())
-    @test length(gs) == 2
-    @test nv(gs["g1"]) == 6 && ne(gs["g1"]) == 5
-    @test nv(gs["g2"]) == 6 && ne(gs["g2"]) == 6
-
-
-    graphs = [PathGraph(10), CompleteGraph(5), WheelGraph(7)]
-    for g in graphs
-        readback_test(Graph6Format(), g, "g1")
+    for g in values(graphs)
+        readback_test(Graph6Format(), g, "graph1")
     end
 
-    (f,fio) = mktemp()
-    close(fio)
-    d = Dict{String, LightGraphs.Graph}("g1"=>CompleteGraph(10), "g2"=>PathGraph(5), "g3" => WheelGraph(7))
-    @test savegraph(f,d, Graph6Format()) == 3
-    g6graphs = GraphIO.loadgraph6_mult(fio)
-    for (gname, g) in g6graphs
-        @test g == d[gnames]
-    end
+    f = gettempname()
+    write_test(Graph6Format(), graphs, f; remove=false, silent=true)
+    read_test_mult(Graph6Format(), graphs, f)
     rm(f)
 end
 
 @testset "Pajek NET" begin
-    #test NETFormat()
-    g10 = CompleteGraph(10)
-    fname,fio = mktemp()
-    close(fio)
-    @test savegraph(fname, g10, NETFormat()) == 1
-    @test loadgraphs(fname,NETFormat())["g"] == g10
-    rm(fname)
-
-    g10 = PathDiGraph(10)
-    @test savegraph(fname, g10, NETFormat()) == 1
-    @test loadgraphs(fname,NETFormat())["g"] == g10
-    rm(fname)
-
-    g10 = loadgraphs(joinpath(testdir, "testdata", "kinship.net"), NETFormat())["g"]
-    @test nv(g10) == 6
-    @test ne(g10) == 8
+#test NETFormat()
+    for g in values(allgraphs)
+        readback_test(NETFormat(), g)
+    end
 end
 
 @testset "JLD" begin
@@ -156,7 +144,6 @@ end
         jldfile = jldopen(path, "w")
         jldfile["g"] = g
         close(jldfile)
-
         jldfile = jldopen(path, "r")
         gs = read(jldfile, "g")
         return gs
@@ -168,21 +155,29 @@ end
         @test gloaded == g
     end
 
-    graphs = [PathGraph(10), CompleteGraph(5), WheelGraph(7)]
-    for (i,g) in enumerate(graphs)
-        path = joinpath(testdir,"testdata", "test.$i.jld")
+    for (i,g) in enumerate(values(graphs))
+        f = gettempname()
+        path = "f.$i.jld"
         testjldio(path, g)
         #delete the file (it gets left on test failure so you could debug it)
         rm(path)
     end
 
-    for (i,g) in enumerate(graphs)
+    for (i,g) in enumerate(values(graphs))
         eprop = Dict{LightGraphs.Edge, Char}([(e, Char(i)) for e in LightGraphs.edges(g)])
         net = GraphIO.Network{LightGraphs.Graph, Int, Char}(g, 1:nv(g), eprop)
-        path = joinpath(testdir,"testdata", "test.$i.jld")
+        f = gettempname()
+        path = "f.$i.jld"
         nsaved = write_readback(path, net)
         @test GraphIO.Network(nsaved) == net
         #delete the file (it gets left on test failure so you could debug it)
         rm(path)
     end
 end
+
+@testset "CDF" begin
+#test CDFFormat()
+    g = loadgraph(joinpath(testdir, "testdata", "30bus.jlg"))
+    read_test(CDFFormat(), g, "graph", joinpath(testdir, "testdata", "30bus.cdf"))
+end
+

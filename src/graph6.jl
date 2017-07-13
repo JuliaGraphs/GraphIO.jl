@@ -15,19 +15,19 @@ function _int2bv(n::Int, k::Int)
   padding = k - l
   bv = falses(k)
   for i = 1:l
-    bv[padding+i] = (bitstr[i] == '1')
+    bv[padding + i] = (bitstr[i] == '1')
   end
   return bv
 end
 
 function _g6_R(_x::BitVector)::Vector{UInt8}
   k = length(_x)
-  padding = cld(k,6) * 6 - k
+  padding = cld(k, 6) * 6 - k
   x = vcat(_x, falses(padding))
   nbytes = div(length(x), 6)
   bytevec = Vector{UInt8}(nbytes)   # uninitialized data!
   for i = 1:nbytes
-    xslice  = x[(i-1)*6+1:i*6]
+    xslice  = x[((i - 1) * 6 + 1):(i * 6)]
 
     intslice = 0
     for bit in xslice
@@ -45,7 +45,7 @@ function _g6_Rp(bytevec::Vector{UInt8})
   nbytes = length(bytevec)
   x = BitVector()
   for byte in bytevec
-    bits = _int2bv(byte-63, 6)
+    bits = _int2bv(byte - 63, 6)
     x = vcat(x, bits)
   end
   return x
@@ -63,7 +63,7 @@ function _g6_N(x::Integer)::Vector{UInt8}
 end
 
 function _g6_Np(N::Vector{UInt8})
-  if N[1] < 0x7e return (Int(N[1] - 63) , N[2:end])
+  if N[1] < 0x7e return (Int(N[1] - 63), N[2:end])
   elseif N[2] < 0x7e return (_bv2int(_g6_Rp(N[2:4])), N[5:end])
   else return(_bv2int(_g6_Rp(N[3:8])), N[9:end])
   end
@@ -78,11 +78,11 @@ Given a graph `g`, create the corresponding Graph6 string.
 function _graphToG6String(g::LightGraphs.Graph)
   A = adjacency_matrix(g, Bool)
   n = nv(g)
-  nbits = div(n * (n-1), 2)
+  nbits = div(n * (n - 1), 2)
   x  = BitVector(nbits)
 
   ind = 0
-  for col = 2:n, row = 1:(col-1)
+  for col = 2:n, row = 1:(col - 1)
     ind += 1
     x[ind] = A[row, col]
   end
@@ -99,7 +99,7 @@ function _g6StringToGraph(s::AbstractString)
 
   g = LightGraphs.Graph(nv)
   n = 0
-  for i in 2:nv, j in 1:i-1
+  for i in 2:nv, j in 1:(i - 1)
     n += 1
     if bitvec[n]
       add_edge!(g, j, i)
@@ -110,11 +110,11 @@ end
 
 function loadgraph6_mult(io::IO)
   n = 0
-  graphdict = Dict{String, LightGraphs.Graph}()
+  graphdict = Dict{String,LightGraphs.Graph}()
   while !eof(io)
     n += 1
     line = strip(chomp(readline(io)))
-    gname = "g$n"
+    gname = "graph$n"
     if length(line) > 0
         g = _g6StringToGraph(line)
         graphdict[gname] = g
@@ -124,21 +124,22 @@ function loadgraph6_mult(io::IO)
 end
 
 """
-    loadgraph6(io, gname="g1")
+    loadgraph6(io, gname="graph")
 
 Read a graph from IO stream `io` in the [Graph6](http://users.cecs.anu.edu.au/%7Ebdm/data/formats.txt)
 format. Return the graph.
 """
-loadgraph6(io::IO, gname::String="g1") = loadgraph6_mult(io)[gname]
+loadgraph6(io::IO, gname::String="graph") = loadgraph6_mult(io)[gname]
 
 
 """
-    savegraph6(io, g, gname="g")
+    savegraph6(io, g, gname="graph")
 
 Write a graph `g` to IO stream `io` in the [Graph6](http://users.cecs.anu.edu.au/%7Ebdm/data/formats.txt)
 format. Return 1 (number of graphs written).
 """
-function savegraph6(io::IO, g::LightGraphs.AbstractGraph, gname::String = "g")
+function savegraph6 end
+@traitfn function savegraph6(io::IO, g::::(!LightGraphs.IsDirected), gname::String = "graph")
   str = _graphToG6String(g)
   println(io, str)
   return 1
@@ -146,8 +147,9 @@ end
 
 function savegraph6_mult(io::IO, graphs::Dict)
   ng = 0
-  for (gname, g) in graphs
-    ng += savegraph6(io, g, gname)
+  sortkeys = sort(collect(keys(graphs)))
+  for gname in sortkeys
+    ng += savegraph6(io, graphs[gname], gname)
   end
   return ng
 end
@@ -155,5 +157,4 @@ end
 loadgraph(io::IO, gname::String, ::Graph6Format) = loadgraph6(io, gname)
 loadgraphs(io::IO, ::Graph6Format) = loadgraph6_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::Graph6Format) = savegraph6(io, g, gname)
-savegraph(io::IO, g::AbstractGraph, ::Graph6Format) = savegraph6(io, g, "graph")
 savegraph(io::IO, d::Dict, ::Graph6Format) = savegraph6_mult(io, d)
