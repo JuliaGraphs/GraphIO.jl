@@ -32,22 +32,21 @@ mutable struct GraphSerializer
 end
 
 function JLD.writeas(g::LightGraphs.Graph)
-    n_adjlist = zeros(Int,nv(g))
-    @assert sum(degree(g))/2 == ne(g)
-    packed_adjlist = Vector{Int}(2*ne(g))
+    n_adjlist = zeros(Int, nv(g))
+    packed_adjlist = Vector{Int}(2 * ne(g))
     k = 0
     degree(g), sum(degree(g))
-    for (i,lst) in enumerate(g.fadjlist)
+    for (i, lst) in enumerate(g.fadjlist)
         #create the offsets
         if i != 1
-            n_adjlist[i] = n_adjlist[i-1] + length(lst)
+            n_adjlist[i] = n_adjlist[i - 1] + length(lst)
         else
             n_adjlist[1] = length(lst)
         end
 
         # pack the neighbors
         for v in lst
-            packed_adjlist[k+=1] = v
+            packed_adjlist[k += 1] = v
         end
     end
     GraphSerializer(vertices(g), ne(g), packed_adjlist, n_adjlist)
@@ -61,12 +60,11 @@ function JLD.readas(gs::GraphSerializer)
         if i == 1
             posbegin = 1
         else
-            posbegin = gs.n_adjlist[i-1] +1
+            posbegin = gs.n_adjlist[i - 1] + 1
         end
         posend   = gs.n_adjlist[i]
         adj[i] = gs.packed_adjlist[posbegin:posend]
     end
-    @assert sum(map(length, adj)) == 2gs.ne
     g = LightGraphs.Graph(gs.ne, adj)
     return g
 end

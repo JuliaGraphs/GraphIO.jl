@@ -23,7 +23,7 @@ function loaddot(io::IO, gname::String)
     p = DOT.parse_dot(readstring(io))
     for pg in p
         isdir = pg.directed
-        possname = isdir? DOT.StringID("digraph") : DOT.StringID("graph")
+        possname = isdir ? DOT.StringID("digraph") : DOT.StringID("graph")
         name = get(pg.id, possname).id
         name == gname && return _dot_read_one_graph(pg)
     end
@@ -33,11 +33,11 @@ end
 function loaddot_mult(io::IO)
     p = DOT.parse_dot(readstring(io))
 
-    graphs = Dict{String, LightGraphs.AbstractGraph}()
+    graphs = Dict{String,LightGraphs.AbstractGraph}()
 
     for pg in p
         isdir = pg.directed
-        possname = isdir? DOT.StringID("digraph") : DOT.StringID("graph")
+        possname = isdir ? DOT.StringID("digraph") : DOT.StringID("graph")
         name = get(pg.id, possname).id
         graphs[name] = _dot_read_one_graph(pg)
     end

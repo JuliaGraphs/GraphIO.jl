@@ -5,4 +5,6 @@ using Base.Test
 testdir = dirname(@__FILE__)
 
 # write your own tests here
-include("graphio.jl")
+@testset "GraphIO" begin
+    include("graphio.jl")
+end
