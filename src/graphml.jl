@@ -57,7 +57,7 @@ function loadgraphml_mult(io::IO)
     name(xroot) == "graphml" || error("Not a GraphML file")
 
     # traverse all its child nodes and print element names
-    graphs = Dict{String, LightGraphs.AbstractGraph}()
+    graphs = Dict{String,LightGraphs.AbstractGraph}()
     for el in eachelement(xroot)
         if name(el) == "graph"
             edgedefault = el["edgedefault"]
@@ -108,11 +108,10 @@ function savegraphml_mult(io::IO, graphs::Dict)
 end
 
 savegraphml(io::IO, g::LightGraphs.AbstractGraph, gname::String) =
-    savegraphml_mult(io, Dict(gname=>g))
+    savegraphml_mult(io, Dict(gname => g))
 
 
 loadgraph(io::IO, gname::String, ::GraphMLFormat) = loadgraphml(io, gname)
 loadgraphs(io::IO, ::GraphMLFormat) = loadgraphml_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GraphMLFormat) = savegraphml(io, g, gname)
-savegraph(io::IO, g::AbstractGraph, ::GraphMLFormat) = savegraphml(io, g, "graph")
 savegraph(io::IO, d::Dict, ::GraphMLFormat) = savegraphml_mult(io, d)

@@ -42,4 +42,3 @@ function savegexf(io::IO, g::LightGraphs.AbstractGraph, gname::String)
 end
 
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GEXFFormat) = savegexf(io, g, gname)
-savegraph(io::IO, g::AbstractGraph, ::GEXFFormat) = savegexf(io, g, "graph")

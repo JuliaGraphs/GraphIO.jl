@@ -8,11 +8,11 @@ function _gml_read_one_graph(gs, dir)
         g = LightGraphs.Graph(length(nodes))
     end
     mapping = Dict{Int,Int}()
-    for (i,n) in enumerate(nodes)
+    for (i, n) in enumerate(nodes)
         mapping[n] = i
     end
     sds = [(Int(x[:source]), Int(x[:target])) for x in gs[:edge]]
-    for (s,d) in (sds)
+    for (s, d) in (sds)
         add_edge!(g, mapping[s], mapping[d])
     end
     return g
@@ -30,7 +30,7 @@ end
 
 function loadgml_mult(io::IO)
     p = GML.parse_dict(readstring(io))
-    graphs = Dict{String, LightGraphs.AbstractGraph}()
+    graphs = Dict{String,LightGraphs.AbstractGraph}()
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
         graphname = get(gs, :label, dir ? "digraph" : "graph")
@@ -50,19 +50,19 @@ function savegml(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
     println(io, "[")
     length(gname) > 0 && println(io, "label \"$gname\"")
     is_directed(g) && println(io, "directed 1")
-    for i=1:nv(g)
-        println(io,"\tnode")
-        println(io,"\t[")
-        println(io,"\t\tid $i")
-        println(io,"\t]")
+    for i = 1:nv(g)
+        println(io, "\tnode")
+        println(io, "\t[")
+        println(io, "\t\tid $i")
+        println(io, "\t]")
     end
     for e in LightGraphs.edges(g)
         s, t = Tuple(e)
-        println(io,"\tedge")
-        println(io,"\t[")
-        println(io,"\t\tsource $s")
-        println(io,"\t\ttarget $t")
-        println(io,"\t]")
+        println(io, "\tedge")
+        println(io, "\t[")
+        println(io, "\t\tsource $s")
+        println(io, "\t\ttarget $t")
+        println(io, "\t]")
     end
     println(io, "]")
     return 1
@@ -83,5 +83,4 @@ end
 loadgraph(io::IO, gname::String, ::GMLFormat) = loadgml(io, gname)
 loadgraphs(io::IO, ::GMLFormat) = loadgml_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GMLFormat) = savegml(io, g, gname)
-savegraph(io::IO, g::AbstractGraph, ::GMLFormat) = savegml(io, g, "graph")
 savegraph(io::IO, d::Dict, ::GMLFormat) = savegml_mult(io, d)
