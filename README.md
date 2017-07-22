@@ -32,7 +32,8 @@ the `loadgraphs` functions. `loadgraph` returns a LightGraph object, while `load
 
 For example, an edgelist file could be loaded as:
 
-    graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
-    
+```
+graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
+``` 
 
 
