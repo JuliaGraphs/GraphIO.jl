@@ -16,7 +16,6 @@ Format        | Read | Write | Multiple Graphs| Format Name  |
 [Pajek NET]   |   ✓  |  ✓    |                |NETFormat     |
 [GEXF]        |      |  ✓    |                |GEXFFormat    |
 [DOT]         |   ✓  |       | ✓              |DOTFormat     |
-[PSF]         |   ✓  |       |                |              |
 [CDF]         |   ✓  |       |                |CDFFormat     |
 
 [EdgeList]: a simple list of sources and dests separated by whitespace and/or comma, one pair per line.
