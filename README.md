@@ -7,17 +7,17 @@ GraphIO provides support to [LightGraphs.jl](https://github.com/JuliaGraphs/Ligh
 
 Currently, the following functionality is provided:
 
-Format        | Read | Write | Multiple Graphs
---------------|------|-------|----------------
-[EdgeList]    |   ✓  |  ✓    |
-[GML]         |   ✓  |  ✓    | ✓
-[Graph6]      |   ✓  |  ✓    | ✓
-[GraphML]     |   ✓  |  ✓    | ✓
-[Pajek NET]   |   ✓  |  ✓    |
-[GEXF]        |      |  ✓    |
-[DOT]         |   ✓  |       | ✓
-[PSF]         |   ✓  |       |
-[CDF]         |   ✓  |       |
+Format        | Read | Write | Multiple Graphs| Format Name  |
+--------------|------|-------|----------------|--------------|
+[EdgeList]    |   ✓  |  ✓    |                |EdgeListFormat|
+[GML]         |   ✓  |  ✓    | ✓              |GMLFormat     |
+[Graph6]      |   ✓  |  ✓    | ✓              |Graph6Format  |
+[GraphML]     |   ✓  |  ✓    | ✓              |GraphMLFormat |
+[Pajek NET]   |   ✓  |  ✓    |                |NETFormat     |
+[GEXF]        |      |  ✓    |                |GEXFFormat    |
+[DOT]         |   ✓  |       | ✓              |DOTFormat     |
+[PSF]         |   ✓  |       |                |              |
+[CDF]         |   ✓  |       |                |CDFFormat     |
 
 [EdgeList]: a simple list of sources and dests separated by whitespace and/or comma, one pair per line.
 [GML]: https://en.wikipedia.org/wiki/Graph_Modelling_Language
@@ -26,3 +26,13 @@ Format        | Read | Write | Multiple Graphs
 [Pajek NET]: https://gephi.org/users/supported-graph-formats/pajek-net-format/
 [GEXF]: https://gephi.org/gexf/format/
 [DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
+
+Graphs are read using either the `loadgraph` function or, for formats that support multiple graphs in a single file,
+the `loadgraphs` functions. `loadgraph` returns a LightGraph object, while `loadgraphs` returns a dictionary of LightGraph objects.  
+
+For example, an edgelist file could be loaded as:
+
+    graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
+    
+
+
