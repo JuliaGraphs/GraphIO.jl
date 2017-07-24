@@ -1,7 +1,6 @@
 julia 0.6
 LightGraphs 0.9.0
-GZip
-EzXML
+EzXML 0.4
 ParserCombinator
 JLD
 SimpleTraits
