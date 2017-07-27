@@ -1,24 +1,26 @@
 # TODO: implement writing a dict of graphs
 
 struct GraphMLFormat <: AbstractGraphFormat end
-function _graphml_read_one_graph(el::EzXML.Node, isdirected::Bool)
+
+function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
     nodes = Dict{String,Int}()
     xedges = Vector{LightGraphs.Edge}()
-
     nodeid = 1
-    for f in eachelement(el)
-        if name(f) == "node"
-            nodes[f["id"]] = nodeid
-            nodeid += 1
-        elseif name(f) == "edge"
-            n1 = f["source"]
-            n2 = f["target"]
-            push!(xedges, LightGraphs.Edge(nodes[n1], nodes[n2]))
-        else
-            warn("Skipping unknown node '$(name(f))'")
+    for typ in reader
+        if typ == EzXML.READER_ELEMENT
+            elname = EzXML.name(reader)
+            if elname == "node"
+                nodes[reader["id"]] = nodeid
+                nodeid += 1
+            elseif elname == "edge"
+                src = reader["source"]
+                tar = reader["target"]
+                push!(xedges, LightGraphs.Edge(nodes[src], nodes[tar]))
+            else
+                warn("Skipping unknown node '$(elname)'")
+            end
         end
     end
-    #Put data in graph
     g = (isdirected ? LightGraphs.DiGraph : LightGraphs.Graph)(length(nodes))
     for edge in xedges
         add_edge!(g, edge)
@@ -27,51 +29,57 @@ function _graphml_read_one_graph(el::EzXML.Node, isdirected::Bool)
 end
 
 function loadgraphml(io::IO, gname::String)
-    xdoc = parsexml(readstring(io))
-    xroot = root(xdoc)  # an instance of XMLElement
-    name(xroot) == "graphml" || error("Not a GraphML file")
-
-    # traverse all its child nodes and print element names
-    for el in eachelement(xroot)
-        if name(el) == "graph"
-            edgedefault = el["edgedefault"]
-            isdir = edgedefault == "directed"   ? true  :
-                    edgedefault == "undirected" ? false :
-                    error("Unknown value of edgedefault: $edgedefault")
-            if haskey(el, "id")
-                graphname = el["id"]
+    reader = EzXML.StreamReader(io)
+    for typ in reader
+        if typ == EzXML.READER_ELEMENT
+            elname = EzXML.name(reader)
+            if elname == "graphml"
+                # ok
+            elseif elname == "graph"
+                edgedefault = reader["edgedefault"]
+                directed = edgedefault == "directed"   ? true :
+                           edgedefault == "undirected" ? false :
+                           error("Unknown value of edgedefault: $edgedefault")
+                if haskey(reader, "id")
+                    graphname = reader["id"]
+                else
+                    graphname = directed ? "digraph" : "graph"
+                end
+                if gname == graphname
+                    return _graphml_read_one_graph(reader, directed)
+                end
+            elseif elname == "node" || elname == "edge"
+                # ok
             else
-                graphname = isdir ? "digraph" : "graph"
+                warn("Skipping unknown XML element '$(elname)'")
             end
-            gname == graphname && return _graphml_read_one_graph(el, isdir)
-        else
-            warn("Skipping unknown XML element '$(name(el))'")
         end
     end
     error("Graph $gname not found")
 end
 
 function loadgraphml_mult(io::IO)
-    xdoc = parsexml(readstring(io))
-    xroot = root(xdoc)  # an instance of XMLElement
-    name(xroot) == "graphml" || error("Not a GraphML file")
-
-    # traverse all its child nodes and print element names
+    reader = EzXML.StreamReader(io)
     graphs = Dict{String,LightGraphs.AbstractGraph}()
-    for el in eachelement(xroot)
-        if name(el) == "graph"
-            edgedefault = el["edgedefault"]
-            isdir = edgedefault == "directed"   ? true  :
-                    edgedefault == "undirected" ? false :
-                    error("Unknown value of edgedefault: $edgedefault")
-            if haskey(el, "id")
-                graphname = el["id"]
+    for typ in reader
+        if typ == EzXML.READER_ELEMENT
+            elname = EzXML.name(reader)
+            if elname == "graphml"
+                # ok
+            elseif elname == "graph"
+                edgedefault = reader["edgedefault"]
+                directed = edgedefault == "directed"   ? true :
+                           edgedefault == "undirected" ? false :
+                           error("Unknown value of edgedefault: $edgedefault")
+                if haskey(reader, "id")
+                    graphname = reader["id"]
+                else
+                    graphname = directed ? "digraph" : "graph"
+                end
+                graphs[graphname] = _graphml_read_one_graph(reader, directed)
             else
-                graphname = isdir ? "digraph" : "graph"
+                warn("Skipping unknown XML element '$(elname)'")
             end
-            graphs[graphname] = _graphml_read_one_graph(el, isdir)
-        else
-            warn("Skipping unknown XML element '$(name(el))'")
         end
     end
     return graphs
