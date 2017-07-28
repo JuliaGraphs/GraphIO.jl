@@ -17,7 +17,7 @@ function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
                 tar = reader["target"]
                 push!(xedges, LightGraphs.Edge(nodes[src], nodes[tar]))
             else
-                warn("Skipping unknown node '$(elname)'")
+                warn("Skipping unknown node '$(elname)' - further warnings will be suppressed", once=true, key="unknode")
             end
         end
     end
@@ -51,7 +51,7 @@ function loadgraphml(io::IO, gname::String)
             elseif elname == "node" || elname == "edge"
                 # ok
             else
-                warn("Skipping unknown XML element '$(elname)'")
+                warn("Skipping unknown XML element '$(elname)' - further warnings will be suppressed", once=true, key="unkel")
             end
         end
     end
@@ -78,7 +78,7 @@ function loadgraphml_mult(io::IO)
                 end
                 graphs[graphname] = _graphml_read_one_graph(reader, directed)
             else
-                warn("Skipping unknown XML element '$(elname)'")
+                warn("Skipping unknown XML element '$(elname)' - further warnings will be suppressed", once=true, key="unkelmult")
             end
         end
     end
