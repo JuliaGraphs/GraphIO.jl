@@ -3,7 +3,7 @@
 <!DOCTYPE graphml SYSTEM "http://www.graphdrawing.org/dtds/graphml.dtd">
 <graphml>
 <warnelement foo="bar">baz</warnelement>
-<graph edgedefault="undirected" id="G">
+<graph edgedefault="undirected">
 <node id="n0"/>
 <node id="n1"/>
 <node id="n2"/>
@@ -17,6 +17,7 @@
 <node id="n10"/>
 <node id="n11"/>
 <node id="n12"/>
+<warnnode foo="bar">baz</warnnode>
 <edge id="e0" source="n0" target="n1"/>
 <edge id="e1" source="n0" target="n3"/>
 <edge id="e2" source="n4" target="n5"/>
