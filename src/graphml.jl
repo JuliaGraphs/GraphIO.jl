@@ -8,7 +8,7 @@ function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
     nodeid = 1
     for typ in reader
         if typ == EzXML.READER_ELEMENT
-            elname = EzXML.name(reader)
+            elname = EzXML.nodename(reader)
             if elname == "node"
                 nodes[reader["id"]] = nodeid
                 nodeid += 1
@@ -32,7 +32,7 @@ function loadgraphml(io::IO, gname::String)
     reader = EzXML.StreamReader(io)
     for typ in reader
         if typ == EzXML.READER_ELEMENT
-            elname = EzXML.name(reader)
+            elname = EzXML.nodename(reader)
             if elname == "graphml"
                 # ok
             elseif elname == "graph"
@@ -63,7 +63,7 @@ function loadgraphml_mult(io::IO)
     graphs = Dict{String,LightGraphs.AbstractGraph}()
     for typ in reader
         if typ == EzXML.READER_ELEMENT
-            elname = EzXML.name(reader)
+            elname = EzXML.nodename(reader)
             if elname == "graphml"
                 # ok
             elseif elname == "graph"
