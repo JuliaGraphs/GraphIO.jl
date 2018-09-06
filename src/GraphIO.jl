@@ -6,7 +6,8 @@ using SimpleTraits
 
 import LightGraphs: loadgraph, loadgraphs, savegraph, AbstractGraphFormat
 using EzXML
-using ParserCombinator: Parsers.DOT, Parsers.GML
+using ParserCombinator.Parsers.DOT
+using ParserCombinator.Parsers.GML
 
 export DOTFormat, GEXFFormat, GMLFormat, Graph6Format,
 GraphMLFormat, NETFormat, EdgeListFormat, CDFFormat

@@ -13,19 +13,19 @@ function _loadcdf(io::IO)
     while !eof(io)
         line = strip(chomp(readline(io)))
         if inbusdata
-            if contains(line, "-999")
+            if occursin("-999", line)
                 inbusdata = false
             else
                 v = parse(Int, split(line)[1])
                 push!(vertices, v)
             end
         elseif inbranchdata
-            if contains(line, "-999")
+            if occursin("-999", line)
                 inbranchdata = false
             else
                 (src_s, dst_s) = split(line)[1:2]
-                src = findfirst(vertices, parse(Int, src_s))
-                dst = findfirst(vertices, parse(Int, dst_s))
+                src = something(findfirst(isequal(parse(Int, src_s)), vertices), 0)
+                dst = something(findfirst(isequal(parse(Int, dst_s)), vertices), 0)
                 push!(srcs, src)
                 push!(dsts, dst)
             end

@@ -1,7 +1,7 @@
 struct Graph6Format <: AbstractGraphFormat end
 
 function _bv2int(x::BitVector)
-  assert(length(x) <= 8 * sizeof(Int))
+  @assert(length(x) <= 8 * sizeof(Int))
   acc = 0
   for i = 1:length(x)
     acc = acc << 1 + x[i]
@@ -10,7 +10,7 @@ function _bv2int(x::BitVector)
 end
 
 function _int2bv(n::Int, k::Int)
-  bitstr = lstrip(bits(n), '0')
+  bitstr = lstrip(bitstring(n), '0')
   l = length(bitstr)
   padding = k - l
   bv = falses(k)
@@ -25,7 +25,7 @@ function _g6_R(_x::BitVector)::Vector{UInt8}
   padding = cld(k, 6) * 6 - k
   x = vcat(_x, falses(padding))
   nbytes = div(length(x), 6)
-  bytevec = Vector{UInt8}(nbytes)   # uninitialized data!
+  bytevec = Vector{UInt8}(undef, nbytes)   # uninitialized data!
   for i = 1:nbytes
     xslice  = x[((i - 1) * 6 + 1):(i * 6)]
 
@@ -71,7 +71,7 @@ end
 
 
 """
-    \_graphToG6String(g)
+    _graphToG6String(g)
 
 Given a graph `g`, create the corresponding Graph6 string.
 """
@@ -79,7 +79,7 @@ function _graphToG6String(g::LightGraphs.Graph)
   A = adjacency_matrix(g, Bool)
   n = nv(g)
   nbits = div(n * (n - 1), 2)
-  x  = BitVector(nbits)
+  x  = BitVector(undef, nbits)
 
   ind = 0
   for col = 2:n, row = 1:(col - 1)
