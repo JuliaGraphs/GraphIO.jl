@@ -145,6 +145,7 @@ end
     @test length(loadgraphs(fname, NETFormat())) == 1
 end
 
+#=
 @testset "JLD" begin
     using JLD
 
@@ -182,6 +183,7 @@ end
         rm(path)
     end
 end
+=#
 
 @testset "CDF" begin
 #test CDFFormat()

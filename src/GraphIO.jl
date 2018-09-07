@@ -13,7 +13,7 @@ export DOTFormat, GEXFFormat, GMLFormat, Graph6Format,
 GraphMLFormat, NETFormat, EdgeListFormat, CDFFormat
 # package code goes here
 
-include("jld.jl")
+#include("jld.jl")
 include("dot.jl")
 include("gexf.jl")
 include("gml.jl")
