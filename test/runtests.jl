@@ -1,6 +1,6 @@
 using GraphIO
 using LightGraphs
-using Base.Test
+using Test
 
 testdir = dirname(@__FILE__)
 

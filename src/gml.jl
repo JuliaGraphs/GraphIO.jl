@@ -17,8 +17,9 @@ function _gml_read_one_graph(gs, dir)
     end
     return g
 end
+
 function loadgml(io::IO, gname::String)
-    p = GML.parse_dict(readstring(io))
+    p = GML.parse_dict(read(io, String))
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
         graphname = get(gs, :label, dir ? "digraph" : "graph")
@@ -29,7 +30,7 @@ function loadgml(io::IO, gname::String)
 end
 
 function loadgml_mult(io::IO)
-    p = GML.parse_dict(readstring(io))
+    p = GML.parse_dict(read(io, String))
     graphs = Dict{String,LightGraphs.AbstractGraph}()
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
