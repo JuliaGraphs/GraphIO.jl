@@ -19,7 +19,7 @@ notifications:
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'using Pkg, InteractiveUtils; appinfo(); Pkg.clone(pwd()); Pkg.build("GraphIO"); Pkg.test("GraphIO"; coverage=true)'
+  - julia -e 'using Pkg, InteractiveUtils; versioninfo(); Pkg.clone(pwd()); Pkg.build("GraphIO"); Pkg.test("GraphIO"; coverage=true)'
 
 after_success:
     - julia -e 'using Pkg; cd(Pkg.dir("GraphIO")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
