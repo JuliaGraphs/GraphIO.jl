@@ -5,6 +5,8 @@
 
 GraphIO provides support to [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl) for reading/writing graphs in various formats.
 
+The current version of GraphIO works with Julia version >= 0.7.
+
 Currently, the following functionality is provided:
 
 Format        | Read | Write | Multiple Graphs| Format Name  |

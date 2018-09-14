@@ -1,4 +1,3 @@
-__precompile__(true)
 module GraphIO
 
 using LightGraphs
