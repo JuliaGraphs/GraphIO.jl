@@ -32,30 +32,30 @@ function loadnet(io::IO, gname::String = "graph")
     while startswith(line, "%")
         line = readline(io)
     end
-    n = parse(Int, matchall(r"\d+", line)[1])
+    n = parse(Int, match(r"\d+", line).match)
     for ioline in eachline(io)
         line = ioline
-        (ismatch(r"^\*Arcs", line) || ismatch(r"^\*Edges", line)) && break
+        (occursin(r"^\*Arcs", line) || occursin(r"^\*Edges", line)) && break
     end
-    if ismatch(r"^\*Arcs", line)
+    if occursin(r"^\*Arcs", line)
         g = LightGraphs.DiGraph(n)
     else
         g = LightGraphs.Graph(n)
     end
-    while ismatch(r"^\*Arcs", line)
+    while occursin(r"^\*Arcs", line)
         for ioline in eachline(io)
             line = ioline
-            m = matchall(r"\d+", line)
-            length(m) < 2 && break
-            add_edge!(g, parse(Int, m[1]), parse(Int, m[2]))
+            ms = collect(m.match for m in eachmatch(r"\d+", line, overlap=false))
+            length(ms) < 2 && break
+            add_edge!(g, parse(Int, ms[1]), parse(Int, ms[2]))
         end
     end
-    while ismatch(r"^\*Edges", line) # add edges in both directions
+    while occursin(r"^\*Edges", line) # add edges in both directions
         for ioline in eachline(io)
             line = ioline
-            m = matchall(r"\d+", line)
-            length(m) < 2 && break
-            i1, i2 = parse(Int, m[1]), parse(Int, m[2])
+            ms = collect(m.match for m in eachmatch(r"\d+", line, overlap=false))
+            length(ms) < 2 && break
+            i1, i2 = parse(Int, ms[1]), parse(Int, ms[2])
             add_edge!(g, i1, i2)
             add_edge!(g, i2, i1)
         end

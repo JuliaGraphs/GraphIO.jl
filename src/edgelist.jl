@@ -2,6 +2,8 @@
 # by commas or whitespace. Will only read the first two elements on
 # each line. Will return a directed graph.
 
+using DelimitedFiles: writedlm
+
 struct EdgeListFormat <: AbstractGraphFormat end
 
 function loadedgelist(io::IO, gname::String)
@@ -33,7 +35,7 @@ function loadedgelist(io::IO, gname::String)
 end
 
 function saveedgelist(io::IO, g::LightGraphs.AbstractGraph, gname::String)
-    writecsv(io, [src(e), dst(e)] for e in collect(LightGraphs.edges(g)))
+    writedlm(io, ([src(e), dst(e)] for e in LightGraphs.edges(g)), ',')
     return 1
 end
 
