@@ -1,3 +1,14 @@
+module GraphML
+
+using GraphIO.EzXML
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export GraphMLFormat
+
+
 # TODO: implement writing a dict of graphs
 
 struct GraphMLFormat <: AbstractGraphFormat end
@@ -123,3 +134,5 @@ loadgraph(io::IO, gname::String, ::GraphMLFormat) = loadgraphml(io, gname)
 loadgraphs(io::IO, ::GraphMLFormat) = loadgraphml_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GraphMLFormat) = savegraphml(io, g, gname)
 savegraph(io::IO, d::Dict, ::GraphMLFormat) = savegraphml_mult(io, d)
+
+end # module

@@ -1,8 +1,17 @@
+module EdgeList
+
 # loads a graph from an edge list format (list of srcs and dsts separated
 # by commas or whitespace. Will only read the first two elements on
 # each line. Will return a directed graph.
 
 using DelimitedFiles: writedlm
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export EdgeListFormat
+
 
 struct EdgeListFormat <: AbstractGraphFormat end
 
@@ -42,3 +51,5 @@ end
 loadgraph(io::IO, gname::String, ::EdgeListFormat) = loadedgelist(io, gname)
 loadgraphs(io::IO, ::EdgeListFormat) = Dict("graph" => loadedgelist(io, "graph"))
 savegraph(io::IO, g::AbstractGraph, gname::String, ::EdgeListFormat) = saveedgelist(io, g, gname)
+
+end

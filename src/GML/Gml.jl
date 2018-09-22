@@ -1,3 +1,14 @@
+module GML
+
+using GraphIO.ParserCombinator.Parsers
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export GMLFormat
+
+
 struct GMLFormat <: AbstractGraphFormat end
 
 function _gml_read_one_graph(gs, dir)
@@ -19,7 +30,7 @@ function _gml_read_one_graph(gs, dir)
 end
 
 function loadgml(io::IO, gname::String)
-    p = GML.parse_dict(read(io, String))
+    p = Parsers.GML.parse_dict(read(io, String))
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
         graphname = get(gs, :label, dir ? "digraph" : "graph")
@@ -30,7 +41,7 @@ function loadgml(io::IO, gname::String)
 end
 
 function loadgml_mult(io::IO)
-    p = GML.parse_dict(read(io, String))
+    p = Parsers.GML.parse_dict(read(io, String))
     graphs = Dict{String,LightGraphs.AbstractGraph}()
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
@@ -85,3 +96,5 @@ loadgraph(io::IO, gname::String, ::GMLFormat) = loadgml(io, gname)
 loadgraphs(io::IO, ::GMLFormat) = loadgml_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GMLFormat) = savegml(io, g, gname)
 savegraph(io::IO, d::Dict, ::GMLFormat) = savegml_mult(io, d)
+
+end # module

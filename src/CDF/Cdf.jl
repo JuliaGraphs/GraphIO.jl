@@ -1,6 +1,16 @@
+module CDF
+
 # loads a graph from a IEEE CDF file.
 # http://www2.ee.washington.edu/research/pstca/formats/cdf.txt
 # http://www2.ee.washington.edu/research/pstca/pf30/ieee30cdf.txt
+
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export CDFFormat
+
 
 struct CDFFormat <: AbstractGraphFormat end
 
@@ -45,3 +55,5 @@ end
 loadcdf(io::IO, gname::String) = _loadcdf(io)
 loadgraph(io::IO, gname::String, ::CDFFormat) = loadcdf(io, gname)
 loadgraphs(io::IO, ::CDFFormat) = Dict("graph" => loadcdf(io, "graph"))
+
+end # module

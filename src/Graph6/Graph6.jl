@@ -1,3 +1,13 @@
+module Graph6
+
+using SimpleTraits
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export Graph6Format
+
 struct Graph6Format <: AbstractGraphFormat end
 
 function _bv2int(x::BitVector)
@@ -158,3 +168,5 @@ loadgraph(io::IO, gname::String, ::Graph6Format) = loadgraph6(io, gname)
 loadgraphs(io::IO, ::Graph6Format) = loadgraph6_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::Graph6Format) = savegraph6(io, g, gname)
 savegraph(io::IO, d::Dict, ::Graph6Format) = savegraph6_mult(io, d)
+
+end # module

@@ -1,17 +1,26 @@
+module DOT
+
+using GraphIO.ParserCombinator.Parsers
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs
+
+export DOTFormat
 
 struct DOTFormat <: AbstractGraphFormat end
 # TODO: implement save
 
-function _dot_read_one_graph(pg::DOT.Graph)
+function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     isdir = pg.directed
-    nvg = length(DOT.nodes(pg))
-    nodedict = Dict(zip(collect(DOT.nodes(pg)), 1:nvg))
+    nvg = length(Parsers.DOT.nodes(pg))
+    nodedict = Dict(zip(collect(Parsers.DOT.nodes(pg)), 1:nvg))
     if isdir
         g = LightGraphs.DiGraph(nvg)
     else
         g = LightGraphs.Graph(nvg)
     end
-    for es in DOT.edges(pg)
+    for es in Parsers.DOT.edges(pg)
         s = nodedict[es[1]]
         d = nodedict[es[2]]
         add_edge!(g, s, d)
@@ -20,10 +29,10 @@ function _dot_read_one_graph(pg::DOT.Graph)
 end
 
 function loaddot(io::IO, gname::String)
-    p = DOT.parse_dot(read(io, String))
+    p = Parsers.DOT.parse_dot(read(io, String))
     for pg in p
         isdir = pg.directed
-        possname = isdir ? DOT.StringID("digraph") : DOT.StringID("graph")
+        possname = isdir ? Parsers.DOT.StringID("digraph") : Parsers.DOT.StringID("graph")
         name = get(pg.id, possname).id
         name == gname && return _dot_read_one_graph(pg)
     end
@@ -31,13 +40,13 @@ function loaddot(io::IO, gname::String)
 end
 
 function loaddot_mult(io::IO)
-    p = DOT.parse_dot(read(io, String))
+    p = Parsers.DOT.parse_dot(read(io, String))
 
-    graphs = Dict{String,LightGraphs.AbstractGraph}()
+    graphs = Dict{String,AbstractGraph}()
 
     for pg in p
         isdir = pg.directed
-        possname = isdir ? DOT.StringID("digraph") : DOT.StringID("graph")
+        possname = isdir ? Parsers.DOT.StringID("digraph") : Parsers.DOT.StringID("graph")
         name = get(pg.id, possname).id
         graphs[name] = _dot_read_one_graph(pg)
     end
@@ -46,3 +55,5 @@ end
 
 loadgraph(io::IO, gname::String, ::DOTFormat) = loaddot(io, gname)
 loadgraphs(io::IO, ::DOTFormat) = loaddot_mult(io)
+
+end #module
