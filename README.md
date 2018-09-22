@@ -3,18 +3,6 @@
 [![Build Status](https://travis-ci.org/JuliaGraphs/GraphIO.jl.svg?branch=master)](https://travis-ci.org/JuliaGraphs/GraphIO.jl)
 [![codecov.io](http://codecov.io/github/JuliaGraphs/GraphIO.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaGraphs/GraphIO.jl?branch=master)
 
-## Support for Julia Version 0.7 and 1.0
-This will come soon. In the meantime, GraphIO can already used by adding the newest untagged branches of EzXML.jl and GraphIO.jl :
-```
-]add EzXML#master
-]add GraphIO#v1.0_fixes
-```
-Don't forget to disable these branches after the problems in GraphIO are fixed.
-
-Note that support for the jld format was removed from this branch.
-
-----
-
 GraphIO provides support to [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl) for reading/writing graphs in various formats.
 
 The current version of GraphIO works with Julia version >= 0.7.
