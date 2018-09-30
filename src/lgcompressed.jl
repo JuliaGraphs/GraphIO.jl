@@ -22,9 +22,7 @@ function savegraph(fn::AbstractString, d::Dict{T,U},
     format::LGCompressedFormat) where T <: AbstractString where U <: AbstractGraph
     io = open(fn, "w")
     try
-        if compress
-            io = GzipCompressorStream(io)
-        end
+        io = GzipCompressorStream(io)
         return savegraph(io, d, LightGraphs.LGFormat())
     catch
         rethrow()
@@ -33,12 +31,11 @@ function savegraph(fn::AbstractString, d::Dict{T,U},
     end
 end
 
-savegraph(fn::AbstractString, d::Dict; compress) = savegraph(fn, d, LGCompressedFormat())
+# savegraph(fn::AbstractString, d::Dict; compress) = savegraph(fn, d, LGCompressedFormat())
 
 loadgraph(fn::AbstractString, gname::AbstractString, format::LGCompressedFormat) =
     loadgraph(fn, gname, LightGraphs.LGFormat())
 
-loadgraph(fn::AbstractString, gname::AbstractString) = loadgraph(fn, gname, LGFormat())
 loadgraph(fn::AbstractString, format::LGCompressedFormat) = loadgraph(fn, "graph", LightGraphs.LGFormat())
 
 loadgraphs(fn::AbstractString, format::LGCompressedFormat) = loadgraphs(fn, LGFormat())
