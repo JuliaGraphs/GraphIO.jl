@@ -145,6 +145,12 @@ end
     @test length(loadgraphs(fname, NETFormat())) == 1
 end
 
+@testset "LGCompressed" begin
+    using CodecZlib
+    for g in values(allgraphs)
+        readback_test(LGCompressedFormat(), g)
+    end
+end
 #=
 @testset "JLD" begin
     using JLD
