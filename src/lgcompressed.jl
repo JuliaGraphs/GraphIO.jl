@@ -16,8 +16,6 @@ end
 savegraph(fn::AbstractString, g::AbstractGraph, format::LGCompressedFormat) =
     savegraph(fn, g, "graph", format)
 
-savegraph(fn::AbstractString, g::AbstractGraph; compress) = savegraph(fn, g, LGCompressedFormat())
-
 function savegraph(fn::AbstractString, d::Dict{T,U},
     format::LGCompressedFormat) where T <: AbstractString where U <: AbstractGraph
     io = open(fn, "w")
