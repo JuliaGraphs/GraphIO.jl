@@ -7,15 +7,12 @@ import LightGraphs: loadgraph, loadgraphs, savegraph, AbstractGraphFormat
 using EzXML
 using ParserCombinator.Parsers.DOT
 using ParserCombinator.Parsers.GML
-using CodecZlib
 
 export DOTFormat, GEXFFormat, GMLFormat, Graph6Format,
-GraphMLFormat, NETFormat, EdgeListFormat, CDFFormat,
-LGCompressedFormat
+GraphMLFormat, NETFormat, EdgeListFormat, CDFFormat
 # package code goes here
 
 #include("jld.jl")
-include("lgcompressed.jl")
 include("dot.jl")
 include("gexf.jl")
 include("gml.jl")

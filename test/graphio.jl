@@ -23,7 +23,7 @@ function read_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.Abstr
     fname::AbstractString=""; testfail=false)
     @test loadgraph(fname, gname, format) == g
     if testfail
-        @test_throws Union{ArgumentError, ErrorException} loadgraph(fname, "badgraphXXX", format)
+        @test_throws ErrorException loadgraph(fname, "badgraphXXX", format)
     end
     @test loadgraphs(fname, format)[gname] == g
 end
@@ -60,7 +60,7 @@ function readback_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.A
     @test loadgraphs(fname, format)[gname] == g
     @test loadgraph(fname, gname, format) == g
     if testfail
-        @test_throws Union{ArgumentError, ErrorException} loadgraph(fname, "badgraphXXX", format)
+        @test_throws ErrorException loadgraph(fname, "badgraphXXX", format)
     end
     if remove
         rm(fname)
@@ -145,12 +145,6 @@ end
     @test length(loadgraphs(fname, NETFormat())) == 1
 end
 
-@testset "LGCompressed" begin
-    using CodecZlib
-    for g in values(allgraphs)
-        readback_test(LGCompressedFormat(), g; testfail=true)
-    end
-end
 #=
 @testset "JLD" begin
     using JLD
