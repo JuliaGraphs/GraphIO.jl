@@ -11,7 +11,8 @@ modules = [
            "DOT", 
            "GEXF", 
            "Graph6", 
-           "GraphML"
+           "GraphML",
+           "LGCompressed"
           ]
 
 include("graphio.jl")
