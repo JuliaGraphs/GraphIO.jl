@@ -1,3 +1,12 @@
+module GEXF
+
+using GraphIO.EzXML
+using LightGraphs
+using LightGraphs: AbstractGraph, AbstractGraphFormat
+
+import LightGraphs: savegraph
+
+export GEXFFormat 
 
 # TODO: implement readgexf
 struct GEXFFormat <: AbstractGraphFormat end
@@ -42,3 +51,5 @@ function savegexf(io::IO, g::LightGraphs.AbstractGraph, gname::String)
 end
 
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GEXFFormat) = savegexf(io, g, gname)
+
+end #module

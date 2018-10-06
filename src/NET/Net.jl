@@ -1,3 +1,14 @@
+module NET
+
+import LightGraphs
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export NETFormat
+
+
 struct NETFormat <: AbstractGraphFormat end
 """
     savenet(io, g, gname="g")
@@ -18,7 +29,6 @@ function savenet(io::IO, g::LightGraphs.AbstractGraph, gname::String = "g")
     end
     return 1
 end
-
 
 """
     loadnet(io::IO, gname="graph")
@@ -66,3 +76,5 @@ end
 loadgraph(io::IO, gname::String, ::NETFormat) = loadnet(io, gname)
 loadgraphs(io::IO, ::NETFormat) = Dict("graph" => loadnet(io, "graph"))
 savegraph(io::IO, g::AbstractGraph, gname::String, ::NETFormat) = savenet(io, g, gname)
+
+end # module

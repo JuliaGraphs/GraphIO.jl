@@ -1,3 +1,13 @@
+module LGCompressed
+
+using GraphIO.CodecZlib
+using LightGraphs
+using LightGraphs: AbstractGraphFormat
+
+import LightGraphs: loadgraph, loadgraphs, savegraph
+
+export LGCompressedFormat
+
 struct LGCompressedFormat <: AbstractGraphFormat end
 
 function savegraph(fn::AbstractString, g::AbstractGraph, gname::AbstractString,
@@ -37,3 +47,5 @@ loadgraph(fn::AbstractString, gname::AbstractString, format::LGCompressedFormat)
 loadgraph(fn::AbstractString, format::LGCompressedFormat) = loadgraph(fn, "graph", LightGraphs.LGFormat())
 
 loadgraphs(fn::AbstractString, format::LGCompressedFormat) = loadgraphs(fn, LGFormat())
+
+end # module
