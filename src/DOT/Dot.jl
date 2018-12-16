@@ -12,30 +12,26 @@ struct DOTFormat <: AbstractGraphFormat end
 
 function savedot(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
     isdir = LightGraphs.is_directed(g)
-    head = (isdir ? "digraph " : "graph ") * gname * " {"
-    nodes = ""
+    println(io,(isdir ? "digraph " : "graph ") * gname * " {")
     for i in LightGraphs.vertices(g)
-        nodes = nodes * "\n\t" * string(i) * " [label = " * string(i) * "]"
+         println(io,"\t" * string(i))
     end
-    edg = ""
     if isdir
         for u in LightGraphs.vertices(g)
-            n = LightGraphs.outneighbors(g, u)
-            if length(n) == 0
+            out_nbrs = LightGraphs.outneighbors(g, u)
+            if length(out_nbrs) == 0
                 continue
             end
-            s = string(n)
-            edg = edg * "\n\t" * string(u) * " -> {" * s[2:length(s)-1] * "}"
+            println(io, "\t" * string(u) * " -> {" * join(out_nbrs,',') * "}")
         end
     else
         for e in LightGraphs.edges(g)
             source = string(LightGraphs.src(e))
             dest = string(LightGraphs.dst(e))
-            edg = edg * "\n\t" * source * " -- " * dest
+            println(io, "\t" * source * " -- " * dest)
         end
     end
-    dot_string = head * nodes * edg * "\n}\n"
-    print(io, dot_string)
+    println(io,"}")
     return 1
 end
 
