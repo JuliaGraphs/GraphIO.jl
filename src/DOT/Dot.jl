@@ -46,11 +46,7 @@ end
 function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     isdir = pg.directed
     nvg = length(Parsers.DOT.nodes(pg))
-    nodedict = try
-            Dict(i => parse(Int64,string(i)) for i in Parsers.DOT.nodes(pg))
-        catch
-            Dict(zip(collect(Parsers.DOT.nodes(pg)), 1:nvg))
-    end
+    nodedict = Dict(zip(collect(Parsers.DOT.nodes(pg)), 1:nvg))
     if isdir
         g = LightGraphs.DiGraph(nvg)
     else
