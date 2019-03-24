@@ -35,9 +35,13 @@ using LightGraphs.Experimental
 
 	#tests for single graph
 
-	fname = joinpath(testdir, "testdata", "saved1graph.dot")
-	write_test(DOTFormat(), g1, "g1", fname, remove = false, silent = true)
-	@test has_isomorph(loadgraph(fname, "g1", DOTFormat()), g1)
+	fname1 = joinpath(testdir, "testdata", "saved1graph.dot")
+	write_test(DOTFormat(), g1, "g1", fname1, remove = false, silent = true)
+	@test has_isomorph(loadgraph(fname1, "g1", DOTFormat()), g1)
+	fname2 = joinpath(testdir, "testdata", "saved1digraph.dot")
+	write_test(DOTFormat(), dg, "dg", fname2, remove = false, silent = true)
+	@test has_isomorph(loadgraph(fname2, "dg", DOTFormat()), dg)	
 
-	rm(fname)	
+	rm(fname1)
+	rm(fname2)	
 end
