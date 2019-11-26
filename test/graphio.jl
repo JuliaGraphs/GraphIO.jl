@@ -1,4 +1,4 @@
-# This file contains helper functions for testing the various 
+# This file contains helper functions for testing the various
 # GraphIO formats
 
 using LightGraphs
@@ -19,8 +19,8 @@ function gettempname()
     (f, fio) = mktemp()
     close(fio)
     return f
-end 
-        
+end
+
 function read_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname::String="g",
     fname::AbstractString=""; testfail=false)
     @test loadgraph(fname, gname, format) == g
@@ -33,7 +33,6 @@ end
 function read_test_mult(format::LightGraphs.AbstractGraphFormat, d::Dict{String,G}, fname::AbstractString="") where G<: AbstractGraph
     rd = loadgraphs(fname, format)
     @test rd == d
-    
 end
 
 function write_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname::String="g",
