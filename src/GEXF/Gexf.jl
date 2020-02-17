@@ -2,6 +2,7 @@ module GEXF
 
 using GraphIO.EzXML
 using LightGraphs
+using MetaGraphs
 using LightGraphs: AbstractGraph, AbstractGraphFormat
 
 import LightGraphs: savegraph
@@ -50,6 +51,7 @@ function savegexf(io::IO, g::LightGraphs.AbstractGraph, gname::String)
     return 1
 end
 
-savegraph(io::IO, g::AbstractGraph, gname::String, ::GEXFFormat) = savegexf(io, g, gname)
 
+
+include("metagraphs.jl")
 end #module

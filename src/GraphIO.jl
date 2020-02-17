@@ -1,7 +1,6 @@
 module GraphIO
 
 using Requires
-
 #=
     NOTE: This is a temporary fix until we can have multiple sub-packages with their own 
     requirements in a single repository.

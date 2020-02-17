@@ -1,0 +1,24 @@
+name = "GraphIO"
+uuid = "2f0f772a-13f1-4a16-8943-390acdf9ae6b"
+authors = ["Pevnak <pevnak@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
+LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+MetaGraphs = "626554b9-1ddb-594c-aa3c-2596fe9399a5"
+ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
+
+[compat]
+CodecZlib = "^0.6"
+EzXML = "^1.1"
+LightGraphs = "^1.3"
+MetaGraphs = "^0.6"
+ParserCombinator = "^2.0"
+Requires = "^1.0"
+SimpleTraits = "^0.9"
+
