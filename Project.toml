@@ -1,7 +1,7 @@
 name = "GraphIO"
 uuid = "2f0f772a-13f1-4a16-8943-390acdf9ae6b"
-authors = ["Pevnak <pevnak@gmail.com>"]
-version = "0.1.0"
+authors = ["Seth Bromberger"]
+version = "0.4.0"
 
 [deps]
 CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
