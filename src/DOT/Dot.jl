@@ -58,27 +58,23 @@ function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     return g
 end
 
+_name(pg::Parsers.DOT.Graph) =
+    pg.id !== nothing ? pg.id.id :
+    Parsers.DOT.StringID(pg.directed ? "digraph" : "graph")
+
 function loaddot(io::IO, gname::String)
     p = Parsers.DOT.parse_dot(read(io, String))
     for pg in p
-        isdir = pg.directed
-        possname = isdir ? Parsers.DOT.StringID("digraph") : Parsers.DOT.StringID("graph")
-        name = get(pg.id, possname).id
-        name == gname && return _dot_read_one_graph(pg)
+        _name(pg) == gname && return _dot_read_one_graph(pg)
     end
     error("Graph $gname not found")
 end
 
 function loaddot_mult(io::IO)
     p = Parsers.DOT.parse_dot(read(io, String))
-
     graphs = Dict{String,AbstractGraph}()
-
     for pg in p
-        isdir = pg.directed
-        possname = isdir ? Parsers.DOT.StringID("digraph") : Parsers.DOT.StringID("graph")
-        name = get(pg.id, possname).id
-        graphs[name] = _dot_read_one_graph(pg)
+        graphs[_name(pg)] = _dot_read_one_graph(pg)
     end
     return graphs
 end
