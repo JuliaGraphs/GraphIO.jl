@@ -4,14 +4,14 @@
 using LightGraphs
 
 graphs = Dict{String,Graph}(
-    "graph1"    => CompleteGraph(5), 
-    "graph2"    => PathGraph(6),
-    "graph3"    =>WheelGraph(4)
+    "graph1"    => complete_graph(5),
+    "graph2"    => path_graph(6),
+    "graph3"    => wheel_graph(4)
     )
 digraphs = Dict{String,DiGraph}(
-    "digraph1"   => CompleteDiGraph(5), 
-    "digraph2"   => PathDiGraph(6),
-    "digraph3"   => WheelDiGraph(4)
+    "digraph1"  => complete_digraph(5),
+    "digraph2"  => path_digraph(6),
+    "digraph3"  => wheel_digraph(4)
 )
 allgraphs = merge(graphs, digraphs)
 

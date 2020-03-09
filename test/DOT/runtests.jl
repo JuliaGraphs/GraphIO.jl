@@ -4,7 +4,7 @@ using GraphIO.DOT
 using LightGraphs.Experimental
 
 @testset "DOT" begin
-    g = CompleteGraph(6)
+    g = complete_graph(6)
     dg = DiGraph(4)
     for e in [Edge(1,2), Edge(1,3), Edge(2,2), Edge(2,3), Edge(4,1), Edge(4,3)]
         add_edge!(dg, e)
