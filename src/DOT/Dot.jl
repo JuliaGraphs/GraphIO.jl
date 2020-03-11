@@ -19,9 +19,7 @@ function savedot(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
     if isdir
         for u in LightGraphs.vertices(g)
             out_nbrs = LightGraphs.outneighbors(g, u)
-            if length(out_nbrs) == 0
-                continue
-            end
+        length(out_nbrs) == 0 && continue
             println(io, "\t" * string(u) * " -> {" * join(out_nbrs,',') * "}")
         end
     else
