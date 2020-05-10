@@ -4,12 +4,42 @@ using GraphIO.ParserCombinator.Parsers
 using LightGraphs
 using LightGraphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs
+import LightGraphs: loadgraph, loadgraphs, savegraph
 
 export DOTFormat
 
 struct DOTFormat <: AbstractGraphFormat end
-# TODO: implement save
+
+function savedot(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
+    isdir = LightGraphs.is_directed(g)
+    println(io,(isdir ? "digraph " : "graph ") * gname * " {")
+    for i in LightGraphs.vertices(g)
+         println(io,"\t" * string(i))
+    end
+    if isdir
+        for u in LightGraphs.vertices(g)
+            out_nbrs = LightGraphs.outneighbors(g, u)
+            length(out_nbrs) == 0 && continue
+            println(io, "\t" * string(u) * " -> {" * join(out_nbrs,',') * "}")
+        end
+    else
+        for e in LightGraphs.edges(g)
+            source = string(LightGraphs.src(e))
+            dest = string(LightGraphs.dst(e))
+            println(io, "\t" * source * " -- " * dest)
+        end
+    end
+    println(io,"}")
+    return 1
+end
+
+function savedot_mult(io::IO, graphs::Dict)
+    ng = 0
+    for (gname, g) in graphs
+        ng += savedot(io, g, gname)
+    end
+    return ng
+end
 
 function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     isdir = pg.directed
@@ -55,5 +85,7 @@ end
 
 loadgraph(io::IO, gname::String, ::DOTFormat) = loaddot(io, gname)
 loadgraphs(io::IO, ::DOTFormat) = loaddot_mult(io)
+savegraph(io::IO, g::AbstractGraph, gname::String, ::DOTFormat) = savedot(io, g, gname)
+savegraph(io::IO, d::Dict, ::DOTFormat) = savedot_mult(io, d)
 
 end #module
