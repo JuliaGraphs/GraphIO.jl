@@ -1,0 +1,25 @@
+name = "GraphIO"
+uuid = "aa1b3936-2fda-51b9-ab35-c553d3a640a2"
+version = "0.5.0"
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
+
+[compat]
+EzXML = "1"
+LightGraphs = "1"
+ParserCombinator = "2"
+julia = "1"
+
+[extras]
+CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
+EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
+LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["CodecZlib", "LightGraphs", "EzXML", "ParserCombinator", "Test"]
