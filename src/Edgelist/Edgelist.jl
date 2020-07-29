@@ -16,31 +16,38 @@ export EdgeListFormat
 struct EdgeListFormat <: AbstractGraphFormat end
 
 function loadedgelist(io::IO, gname::String)
-    srcs = Vector{String}()
-    dsts = Vector{String}()
+    elist = Vector{Tuple{Int64, Int64}}()
+    nvg = 0
+    neg = 0
+    fadjlist = Vector{Vector{Int64}}()
+    badjlist = Vector{Vector{Int64}}()
     while !eof(io)
-        line = strip(chomp(readline(io)))
-        if !startswith(line, "#") && (line != "")
-            # println("linelength = $(length(line)), line = $line")
-            r = r"(\w+)[\s,]+(\w+)"
-            src_s, dst_s = match(r, line).captures
-            # println("src_s = $src_s, dst_s = $dst_s")
-            push!(srcs, src_s)
-            push!(dsts, dst_s)
+        x = readline(io)
+        i = 1
+        while x[i] != ' ' && x[i] != ','
+            i += 1
         end
+        s = parse(Int64, x[1:i-1])
+        while x[i] == ' ' || x[i] == ','
+            i += 1
+        end
+        ii = i
+        while i <= length(x) && x[i] != ' '
+            i += 1
+        end
+        d = parse(Int64, x[ii:i-1])
+        if nvg < max(s, d)
+            nvg = max(s, d)
+            append!(fadjlist, [Vector{Int64}() for _ in 1:nvg-length(fadjlist)])
+            append!(badjlist, [Vector{Int64}() for _ in 1:nvg-length(badjlist)])
+        end
+        push!(fadjlist[s], d)
+        push!(badjlist[d], s)
+        neg += 1
     end
-    vxset = unique(vcat(srcs, dsts))
-    vxdict = Dict{String,Int}()
-    for (v, k) in enumerate(vxset)
-        vxdict[k] = v
-    end
-
-    n_v = length(vxset)
-    g = LightGraphs.DiGraph(n_v)
-    for (u, v) in zip(srcs, dsts)
-        add_edge!(g, vxdict[u], vxdict[v])
-    end
-    return g
+    sort!.(fadjlist)
+    sort!.(badjlist)
+    return LightGraphs.DiGraph(neg, fadjlist, badjlist)
 end
 
 function saveedgelist(io::IO, g::LightGraphs.AbstractGraph, gname::String)
