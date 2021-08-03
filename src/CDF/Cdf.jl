@@ -1,8 +1,8 @@
 module CDF
 
 # loads a graph from a IEEE CDF file.
-# http://www2.ee.washington.edu/research/pstca/formats/cdf.txt
-# http://www2.ee.washington.edu/research/pstca/pf30/ieee30cdf.txt
+# https://labs.ece.uw.edu/pstca/formats/cdf.txt
+# https://labs.ece.uw.edu/pstca/pf30/ieee30cdf.txt
 
 using LightGraphs
 using LightGraphs: AbstractGraphFormat

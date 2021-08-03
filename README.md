@@ -18,7 +18,7 @@ EdgeList<sup>[*](#EL)</sup> |   ✓  |  ✓    |                |EdgeListFormat|
 [Pajek NET](https://gephi.org/users/supported-graph-formats/pajek-net-format/) |   ✓  |  ✓    |                |NETFormat     |
 [GEXF](https://gephi.org/gexf/format/) |      |  ✓    |                |GEXFFormat    |
 [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) |   ✓  |       | ✓              |DOTFormat     |
-[CDF] |   ✓  |       |                |CDFFormat     |
+[CDF](https://labs.ece.uw.edu/pstca/formats/cdf.txt) |   ✓  |       |                |CDFFormat     |
 
 <a name="EL">*</a> *EdgeList* is a simple list of sources and dests separated by whitespace and/or comma, one pair per line.
 
