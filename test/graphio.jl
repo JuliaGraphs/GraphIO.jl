@@ -19,8 +19,8 @@ function gettempname()
     (f, fio) = mktemp()
     close(fio)
     return f
-end 
-        
+end
+
 function read_test(format::Graphs.AbstractGraphFormat, g::Graphs.AbstractGraph, gname::String="g",
     fname::AbstractString=""; testfail=false)
     @test loadgraph(fname, gname, format) == g
@@ -33,7 +33,7 @@ end
 function read_test_mult(format::Graphs.AbstractGraphFormat, d::Dict{String,G}, fname::AbstractString="") where G<: AbstractGraph
     rd = loadgraphs(fname, format)
     @test rd == d
-    
+
 end
 
 function write_test(format::Graphs.AbstractGraphFormat, g::Graphs.AbstractGraph, gname::String="g",

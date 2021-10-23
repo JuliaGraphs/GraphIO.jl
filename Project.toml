@@ -11,7 +11,7 @@ SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 [compat]
 EzXML = "1"
 Graphs = "1.4"
-ParserCombinator = "2"
+ParserCombinator = "2.1"
 Requires = "1"
 SimpleTraits = "0.9"
 julia = "1"
