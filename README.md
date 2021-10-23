@@ -5,8 +5,6 @@
 
 GraphIO provides support to [Graphs.jl](https://github.com/JuliaGraphs/Graphs.jl) for reading/writing graphs in various formats.
 
-The current version of GraphIO works with Julia version >= 1.6.
-
 Currently, the following functionality is provided:
 
 Format        | Read | Write | Multiple Graphs| Format Name  |
@@ -33,7 +31,7 @@ the `loadgraphs` functions. `loadgraph` returns a Graph object, while `loadgraph
 
 For example, an edgelist file could be loaded as:
 
-```
+```julia
 graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
 ``` 
 
