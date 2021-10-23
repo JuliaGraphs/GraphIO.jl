@@ -1,10 +1,10 @@
 module GML
 
 using GraphIO.ParserCombinator.Parsers
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export GMLFormat
 
@@ -14,9 +14,9 @@ struct GMLFormat <: AbstractGraphFormat end
 function _gml_read_one_graph(gs, dir)
     nodes = [x[:id] for x in gs[:node]]
     if dir
-        g = LightGraphs.DiGraph(length(nodes))
+        g = Graphs.DiGraph(length(nodes))
     else
-        g = LightGraphs.Graph(length(nodes))
+        g = Graphs.Graph(length(nodes))
     end
     mapping = Dict{Int,Int}()
     for (i, n) in enumerate(nodes)
@@ -42,7 +42,7 @@ end
 
 function loadgml_mult(io::IO)
     p = Parsers.GML.parse_dict(read(io, String))
-    graphs = Dict{String,LightGraphs.AbstractGraph}()
+    graphs = Dict{String,Graphs.AbstractGraph}()
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
         graphname = get(gs, :label, dir ? "digraph" : "graph")
@@ -57,7 +57,7 @@ end
 Write a graph `g` with name `gname` to an IO stream `io` in the
 [GML](https://en.wikipedia.org/wiki/Graph_Modelling_Language) format. Return 1.
 """
-function savegml(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
+function savegml(io::IO, g::Graphs.AbstractGraph, gname::String = "")
     println(io, "graph")
     println(io, "[")
     length(gname) > 0 && println(io, "label \"$gname\"")
@@ -68,7 +68,7 @@ function savegml(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
         println(io, "\t\tid $i")
         println(io, "\t]")
     end
-    for e in LightGraphs.edges(g)
+    for e in Graphs.edges(g)
         s, t = Tuple(e)
         println(io, "\tedge")
         println(io, "\t[")

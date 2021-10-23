@@ -5,10 +5,10 @@ module EdgeList
 # each line. Will return a directed graph.
 
 using DelimitedFiles: writedlm
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export EdgeListFormat
 
@@ -36,15 +36,15 @@ function loadedgelist(io::IO, gname::String)
     end
 
     n_v = length(vxset)
-    g = LightGraphs.DiGraph(n_v)
+    g = Graphs.DiGraph(n_v)
     for (u, v) in zip(srcs, dsts)
         add_edge!(g, vxdict[u], vxdict[v])
     end
     return g
 end
 
-function saveedgelist(io::IO, g::LightGraphs.AbstractGraph, gname::String)
-    writedlm(io, ([src(e), dst(e)] for e in LightGraphs.edges(g)), ',')
+function saveedgelist(io::IO, g::Graphs.AbstractGraph, gname::String)
+    writedlm(io, ([src(e), dst(e)] for e in Graphs.edges(g)), ',')
     return 1
 end
 

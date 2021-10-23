@@ -1,10 +1,10 @@
 module GEXF
 
 using GraphIO.EzXML
-using LightGraphs
-using LightGraphs: AbstractGraph, AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraph, AbstractGraphFormat
 
-import LightGraphs: savegraph
+import Graphs: savegraph
 
 export GEXFFormat 
 
@@ -16,7 +16,7 @@ struct GEXFFormat <: AbstractGraphFormat end
 Write a graph `g` with name `gname` to an IO stream `io` in the
 [Gexf](http://gexf.net/format/) format. Return 1 (number of graphs written).
 """
-function savegexf(io::IO, g::LightGraphs.AbstractGraph, gname::String)
+function savegexf(io::IO, g::Graphs.AbstractGraph, gname::String)
     xdoc = XMLDocument()
     xroot = setroot!(xdoc, ElementNode("gexf"))
     xroot["xmlns"] = "http://www.gexf.net/1.2draft"
@@ -38,7 +38,7 @@ function savegexf(io::IO, g::LightGraphs.AbstractGraph, gname::String)
 
     xedges = addelement!(xg, "edges")
     m = 0
-    for e in LightGraphs.edges(g)
+    for e in Graphs.edges(g)
         xe = addelement!(xedges, "edge")
         xe["id"] = "$m"
         xe["source"] = "$(src(e)-1)"

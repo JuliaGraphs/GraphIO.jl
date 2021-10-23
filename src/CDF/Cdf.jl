@@ -4,10 +4,10 @@ module CDF
 # http://www2.ee.washington.edu/research/pstca/formats/cdf.txt
 # http://www2.ee.washington.edu/research/pstca/pf30/ieee30cdf.txt
 
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export CDFFormat
 
@@ -45,7 +45,7 @@ function _loadcdf(io::IO)
         end
     end
     n_v = length(vertices)
-    g = LightGraphs.Graph(n_v)
+    g = Graphs.Graph(n_v)
     for p in zip(srcs, dsts)
         add_edge!(g, p)
     end

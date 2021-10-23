@@ -40,7 +40,7 @@ function loadintedgelist(io::IO, gname::String, offset::Int64)
     		push!(badjlist[v], u)
     	end
     end
-    return LightGraphs.DiGraph(neg, fadjlist, badjlist)
+    return Graphs.DiGraph(neg, fadjlist, badjlist)
 end
 
 loadgraph(io::IO, gname::String, fmt::IntEdgeListFormat) = loadintedgelist(io, gname, fmt.offset)

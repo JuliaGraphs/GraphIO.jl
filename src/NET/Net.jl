@@ -1,10 +1,10 @@
 module NET
 
-import LightGraphs
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+import Graphs
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export NETFormat
 
@@ -16,7 +16,7 @@ struct NETFormat <: AbstractGraphFormat end
 Write a graph `g` to an IO stream `io` in the [Pajek NET](http://gephi.github.io/users/supported-graph-formats/pajek-net-format/)
 format. Return 1 (number of graphs written).
 """
-function savenet(io::IO, g::LightGraphs.AbstractGraph, gname::String = "g")
+function savenet(io::IO, g::Graphs.AbstractGraph, gname::String = "g")
     println(io, "*Vertices $(nv(g))")
     # write edges
     if is_directed(g)
@@ -24,7 +24,7 @@ function savenet(io::IO, g::LightGraphs.AbstractGraph, gname::String = "g")
     else
         println(io, "*Edges")
     end
-    for e in LightGraphs.edges(g)
+    for e in Graphs.edges(g)
         println(io, "$(src(e)) $(dst(e))")
     end
     return 1
@@ -48,9 +48,9 @@ function loadnet(io::IO, gname::String = "graph")
         (occursin(r"^\*Arcs", line) || occursin(r"^\*Edges", line)) && break
     end
     if occursin(r"^\*Arcs", line)
-        g = LightGraphs.DiGraph(n)
+        g = Graphs.DiGraph(n)
     else
-        g = LightGraphs.Graph(n)
+        g = Graphs.Graph(n)
     end
     while occursin(r"^\*Arcs", line)
         for ioline in eachline(io)
