@@ -1,31 +1,31 @@
 module DOT
 
 using GraphIO.ParserCombinator.Parsers
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export DOTFormat
 
 struct DOTFormat <: AbstractGraphFormat end
 
-function savedot(io::IO, g::LightGraphs.AbstractGraph, gname::String = "")
-    isdir = LightGraphs.is_directed(g)
+function savedot(io::IO, g::Graphs.AbstractGraph, gname::String = "")
+    isdir = Graphs.is_directed(g)
     println(io,(isdir ? "digraph " : "graph ") * gname * " {")
-    for i in LightGraphs.vertices(g)
+    for i in Graphs.vertices(g)
          println(io,"\t" * string(i))
     end
     if isdir
-        for u in LightGraphs.vertices(g)
-            out_nbrs = LightGraphs.outneighbors(g, u)
+        for u in Graphs.vertices(g)
+            out_nbrs = Graphs.outneighbors(g, u)
             length(out_nbrs) == 0 && continue
             println(io, "\t" * string(u) * " -> {" * join(out_nbrs,',') * "}")
         end
     else
-        for e in LightGraphs.edges(g)
-            source = string(LightGraphs.src(e))
-            dest = string(LightGraphs.dst(e))
+        for e in Graphs.edges(g)
+            source = string(Graphs.src(e))
+            dest = string(Graphs.dst(e))
             println(io, "\t" * source * " -- " * dest)
         end
     end
@@ -46,9 +46,9 @@ function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     nvg = length(Parsers.DOT.nodes(pg))
     nodedict = Dict(zip(collect(Parsers.DOT.nodes(pg)), 1:nvg))
     if isdir
-        g = LightGraphs.DiGraph(nvg)
+        g = Graphs.DiGraph(nvg)
     else
-        g = LightGraphs.Graph(nvg)
+        g = Graphs.Graph(nvg)
     end
     for es in Parsers.DOT.edges(pg)
         s = nodedict[es[1]]
@@ -58,27 +58,24 @@ function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     return g
 end
 
+_name(pg::Parsers.DOT.Graph) =
+    pg.id !== nothing ? pg.id.id :
+    Parsers.DOT.StringID(pg.directed ? "digraph" : "graph")
+
 function loaddot(io::IO, gname::String)
     p = Parsers.DOT.parse_dot(read(io, String))
     for pg in p
-        isdir = pg.directed
-        possname = isdir ? Parsers.DOT.StringID("digraph") : Parsers.DOT.StringID("graph")
-        name = get(pg.id, possname).id
-        name == gname && return _dot_read_one_graph(pg)
+        _name(pg) == gname && return _dot_read_one_graph(pg)
     end
     error("Graph $gname not found")
 end
 
 function loaddot_mult(io::IO)
     p = Parsers.DOT.parse_dot(read(io, String))
-
     graphs = Dict{String,AbstractGraph}()
 
     for pg in p
-        isdir = pg.directed
-        possname = isdir ? Parsers.DOT.StringID("digraph") : Parsers.DOT.StringID("graph")
-        name = get(pg.id, possname).id
-        graphs[name] = _dot_read_one_graph(pg)
+        graphs[_name(pg)] = _dot_read_one_graph(pg)
     end
     return graphs
 end

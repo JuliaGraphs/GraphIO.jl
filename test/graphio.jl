@@ -1,17 +1,17 @@
 # This file contains helper functions for testing the various 
 # GraphIO formats
 
-using LightGraphs
+using Graphs
 
 graphs = Dict{String,Graph}(
-    "graph1"    => CompleteGraph(5), 
-    "graph2"    => PathGraph(6),
-    "graph3"    =>WheelGraph(4)
+    "graph1"    => complete_graph(5), 
+    "graph2"    => path_graph(6),
+    "graph3"    => wheel_graph(4)
     )
 digraphs = Dict{String,DiGraph}(
-    "digraph1"   => CompleteDiGraph(5), 
-    "digraph2"   => PathDiGraph(6),
-    "digraph3"   => WheelDiGraph(4)
+    "digraph1"   => complete_digraph(5), 
+    "digraph2"   => path_digraph(6),
+    "digraph3"   => wheel_digraph(4)
 )
 allgraphs = merge(graphs, digraphs)
 
@@ -19,9 +19,9 @@ function gettempname()
     (f, fio) = mktemp()
     close(fio)
     return f
-end 
-        
-function read_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname::String="g",
+end
+
+function read_test(format::Graphs.AbstractGraphFormat, g::Graphs.AbstractGraph, gname::String="g",
     fname::AbstractString=""; testfail=false)
     @test loadgraph(fname, gname, format) == g
     if testfail
@@ -30,13 +30,13 @@ function read_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.Abstr
     @test loadgraphs(fname, format)[gname] == g
 end
 
-function read_test_mult(format::LightGraphs.AbstractGraphFormat, d::Dict{String,G}, fname::AbstractString="") where G<: AbstractGraph
+function read_test_mult(format::Graphs.AbstractGraphFormat, d::Dict{String,G}, fname::AbstractString="") where G<: AbstractGraph
     rd = loadgraphs(fname, format)
     @test rd == d
-    
+
 end
 
-function write_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname::String="g",
+function write_test(format::Graphs.AbstractGraphFormat, g::Graphs.AbstractGraph, gname::String="g",
     fname::AbstractString=gettempname(); remove=true, silent=false)
     @test savegraph(fname, g, gname, format) == 1
     if remove
@@ -46,8 +46,8 @@ function write_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.Abst
     end
 end
 
-function write_test(format::LightGraphs.AbstractGraphFormat, d::Dict{String,G},
-    fname::AbstractString=gettempname(); remove=true, silent=false) where G <: LightGraphs.AbstractGraph
+function write_test(format::Graphs.AbstractGraphFormat, d::Dict{String,G},
+    fname::AbstractString=gettempname(); remove=true, silent=false) where G <: Graphs.AbstractGraph
     @test savegraph(fname, d, format) == length(d)
     if remove
         rm(fname)
@@ -56,7 +56,7 @@ function write_test(format::LightGraphs.AbstractGraphFormat, d::Dict{String,G},
     end
 end
 
-function readback_test(format::LightGraphs.AbstractGraphFormat, g::LightGraphs.AbstractGraph, gname="graph",
+function readback_test(format::Graphs.AbstractGraphFormat, g::Graphs.AbstractGraph, gname="graph",
                         fname=gettempname(); remove=true, testfail=false)
     @test savegraph(fname, g, format) == 1
     @test loadgraphs(fname, format)[gname] == g

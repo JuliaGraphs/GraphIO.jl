@@ -1,11 +1,9 @@
 # GraphIO
 
-[![Build Status](https://travis-ci.org/JuliaGraphs/GraphIO.jl.svg?branch=master)](https://travis-ci.org/JuliaGraphs/GraphIO.jl)
+[![Build Status](https://github.com/JuliaGraphs/GraphIO.jl/workflows/CI/badge.svg)](https://github.com/JuliaGraphs/GraphIO.jl/actions?query=workflow%3ACI+branch%3Amaster)
 [![codecov.io](http://codecov.io/github/JuliaGraphs/GraphIO.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaGraphs/GraphIO.jl?branch=master)
 
-GraphIO provides support to [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl) for reading/writing graphs in various formats.
-
-The current version of GraphIO works with Julia version >= 0.7.
+GraphIO provides support to [Graphs.jl](https://github.com/JuliaGraphs/Graphs.jl) for reading/writing graphs in various formats.
 
 Currently, the following functionality is provided:
 
@@ -29,11 +27,11 @@ Format        | Read | Write | Multiple Graphs| Format Name  |
 [DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
 
 Graphs are read using either the `loadgraph` function or, for formats that support multiple graphs in a single file,
-the `loadgraphs` functions. `loadgraph` returns a LightGraph object, while `loadgraphs` returns a dictionary of LightGraph objects.  
+the `loadgraphs` functions. `loadgraph` returns a Graph object, while `loadgraphs` returns a dictionary of Graph objects.
 
 For example, an edgelist file could be loaded as:
 
-```
+```julia
 graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
 ``` 
 

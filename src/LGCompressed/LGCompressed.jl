@@ -1,10 +1,10 @@
 module LGCompressed
 
 using GraphIO.CodecZlib
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export LGCompressedFormat
 
@@ -15,7 +15,7 @@ function savegraph(fn::AbstractString, g::AbstractGraph, gname::AbstractString,
     io = open(fn, "w")
     try
         io = GzipCompressorStream(io)
-        return savegraph(io, g, gname, LightGraphs.LGFormat())
+        return savegraph(io, g, gname, Graphs.LGFormat())
     catch
         rethrow()
     finally
@@ -31,7 +31,7 @@ function savegraph(fn::AbstractString, d::Dict{T,U},
     io = open(fn, "w")
     try
         io = GzipCompressorStream(io)
-        return savegraph(io, d, LightGraphs.LGFormat())
+        return savegraph(io, d, Graphs.LGFormat())
     catch
         rethrow()
     finally
@@ -42,9 +42,9 @@ end
 # savegraph(fn::AbstractString, d::Dict; compress) = savegraph(fn, d, LGCompressedFormat())
 
 loadgraph(fn::AbstractString, gname::AbstractString, format::LGCompressedFormat) =
-    loadgraph(fn, gname, LightGraphs.LGFormat())
+    loadgraph(fn, gname, Graphs.LGFormat())
 
-loadgraph(fn::AbstractString, format::LGCompressedFormat) = loadgraph(fn, "graph", LightGraphs.LGFormat())
+loadgraph(fn::AbstractString, format::LGCompressedFormat) = loadgraph(fn, "graph", Graphs.LGFormat())
 
 loadgraphs(fn::AbstractString, format::LGCompressedFormat) = loadgraphs(fn, LGFormat())
 

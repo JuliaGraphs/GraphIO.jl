@@ -1,10 +1,10 @@
 module Graph6
 
 using SimpleTraits
-using LightGraphs
-using LightGraphs: AbstractGraphFormat
+using Graphs
+using Graphs: AbstractGraphFormat
 
-import LightGraphs: loadgraph, loadgraphs, savegraph
+import Graphs: loadgraph, loadgraphs, savegraph
 
 export Graph6Format
 
@@ -85,7 +85,7 @@ end
 
 Given a graph `g`, create the corresponding Graph6 string.
 """
-function _graphToG6String(g::LightGraphs.Graph)
+function _graphToG6String(g::Graphs.Graph)
   A = adjacency_matrix(g, Bool)
   n = nv(g)
   nbits = div(n * (n - 1), 2)
@@ -107,7 +107,7 @@ function _g6StringToGraph(s::AbstractString)
   (nv, rest) = _g6_Np(V)
   bitvec = _g6_Rp(rest)
 
-  g = LightGraphs.Graph(nv)
+  g = Graphs.Graph(nv)
   n = 0
   for i in 2:nv, j in 1:(i - 1)
     n += 1
@@ -120,7 +120,7 @@ end
 
 function loadgraph6_mult(io::IO)
   n = 0
-  graphdict = Dict{String,LightGraphs.Graph}()
+  graphdict = Dict{String,Graphs.Graph}()
   while !eof(io)
     n += 1
     line = strip(chomp(readline(io)))
@@ -149,7 +149,7 @@ Write a graph `g` to IO stream `io` in the [Graph6](http://users.cecs.anu.edu.au
 format. Return 1 (number of graphs written).
 """
 function savegraph6 end
-@traitfn function savegraph6(io::IO, g::::(!LightGraphs.IsDirected), gname::String = "graph")
+@traitfn function savegraph6(io::IO, g::::(!Graphs.IsDirected), gname::String = "graph")
   str = _graphToG6String(g)
   println(io, str)
   return 1

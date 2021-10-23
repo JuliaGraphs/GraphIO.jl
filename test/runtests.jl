@@ -1,4 +1,4 @@
-using LightGraphs
+using Graphs
 using Test
 
 testdir = dirname(@__FILE__)
