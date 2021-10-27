@@ -1,6 +1,6 @@
 module GEXF
 
-using GraphIO.EzXML
+using EzXML
 using Graphs
 using Graphs: AbstractGraph, AbstractGraphFormat
 

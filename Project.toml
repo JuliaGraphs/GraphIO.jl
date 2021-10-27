@@ -5,23 +5,21 @@ version = "0.6.0"
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
-Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
+CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
+EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
+ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
 
 [compat]
 EzXML = "1"
+CodecZlib = "0.7"
 Graphs = "1.4"
 ParserCombinator = "2.1"
-Requires = "1"
 SimpleTraits = "0.9"
 julia = "1"
 
 [extras]
-CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
-EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
-Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
-ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["CodecZlib", "Graphs", "EzXML", "ParserCombinator", "Test"]
+test = ["Test"]

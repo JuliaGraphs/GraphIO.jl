@@ -1,6 +1,6 @@
 module GML
 
-using GraphIO.ParserCombinator.Parsers
+using ParserCombinator.Parsers
 using Graphs
 using Graphs: AbstractGraphFormat
 

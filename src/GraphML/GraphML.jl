@@ -1,6 +1,6 @@
 module GraphML
 
-using GraphIO.EzXML
+using EzXML
 using Graphs
 using Graphs: AbstractGraphFormat
 

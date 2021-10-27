@@ -1,6 +1,6 @@
 module LGCompressed
 
-using GraphIO.CodecZlib
+using CodecZlib
 using Graphs
 using Graphs: AbstractGraphFormat
 
