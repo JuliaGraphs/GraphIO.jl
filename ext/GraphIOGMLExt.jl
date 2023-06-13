@@ -1,11 +1,25 @@
-using .ParserCombinator.Parsers
+module GraphIOGMLExt
+
+using Graphs
+import Graphs: loadgraph, loadgraphs, savegraph
+
+@static if isdefined(Base, :get_extension)
+    using GraphIO
+    using ParserCombinator
+    import GraphIO.GML.GMLFormat
+else # not required for julia >= v1.9
+    using ..GraphIO
+    using ..ParserCombinator
+    import ..GraphIO.GML.GMLFormat
+end
+
 
 function _gml_read_one_graph(gs, dir)
     nodes = [x[:id] for x in gs[:node]]
     if dir
-        g = Graphs.DiGraph(length(nodes))
+        g = DiGraph(length(nodes))
     else
-        g = Graphs.Graph(length(nodes))
+        g = Graph(length(nodes))
     end
     mapping = Dict{Int,Int}()
     for (i, n) in enumerate(nodes)
@@ -31,7 +45,7 @@ end
 
 function loadgml_mult(io::IO)
     p = Parsers.GML.parse_dict(read(io, String))
-    graphs = Dict{String,Graphs.AbstractGraph}()
+    graphs = Dict{String,AbstractGraph}()
     for gs in p[:graph]
         dir = Bool(get(gs, :directed, 0))
         graphname = get(gs, :label, dir ? "digraph" : "graph")
@@ -46,7 +60,7 @@ end
 Write a graph `g` with name `gname` to an IO stream `io` in the
 [GML](https://en.wikipedia.org/wiki/Graph_Modelling_Language) format. Return 1.
 """
-function savegml(io::IO, g::Graphs.AbstractGraph, gname::String = "")
+function savegml(io::IO, g::AbstractGraph, gname::String = "")
     println(io, "graph")
     println(io, "[")
     length(gname) > 0 && println(io, "label \"$gname\"")
@@ -57,7 +71,7 @@ function savegml(io::IO, g::Graphs.AbstractGraph, gname::String = "")
         println(io, "\t\tid $i")
         println(io, "\t]")
     end
-    for e in Graphs.edges(g)
+    for e in edges(g)
         s, t = Tuple(e)
         println(io, "\tedge")
         println(io, "\t[")
@@ -85,3 +99,5 @@ loadgraph(io::IO, gname::String, ::GMLFormat) = loadgml(io, gname)
 loadgraphs(io::IO, ::GMLFormat) = loadgml_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GMLFormat) = savegml(io, g, gname)
 savegraph(io::IO, d::Dict, ::GMLFormat) = savegml_mult(io, d)
+
+end

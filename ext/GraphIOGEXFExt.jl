@@ -1,4 +1,18 @@
-using .EzXML
+module GraphIOGEXFExt
+
+using Graphs
+import Graphs: loadgraph, loadgraphs, savegraph, AbstractGraph
+
+@static if isdefined(Base, :get_extension)
+    using GraphIO
+    using EzXML
+    import GraphIO.GEXF.GEXFFormat
+else # not required for julia >= v1.9
+    using ..GraphIO
+    using ..EzXML
+    import ..GraphIO.GEXF.GEXFFormat
+end
+
 
 """
     savegexf(f, g, gname)
@@ -6,7 +20,7 @@ using .EzXML
 Write a graph `g` with name `gname` to an IO stream `io` in the
 [Gexf](http://gexf.net/format/) format. Return 1 (number of graphs written).
 """
-function savegexf(io::IO, g::Graphs.AbstractGraph, gname::String)
+function savegexf(io::IO, g::AbstractGraph, gname::String)
     xdoc = XMLDocument()
     xroot = setroot!(xdoc, ElementNode("gexf"))
     xroot["xmlns"] = "http://www.gexf.net/1.2draft"
@@ -28,7 +42,7 @@ function savegexf(io::IO, g::Graphs.AbstractGraph, gname::String)
 
     xedges = addelement!(xg, "edges")
     m = 0
-    for e in Graphs.edges(g)
+    for e in edges(g)
         xe = addelement!(xedges, "edge")
         xe["id"] = "$m"
         xe["source"] = "$(src(e)-1)"
@@ -41,3 +55,5 @@ function savegexf(io::IO, g::Graphs.AbstractGraph, gname::String)
 end
 
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GEXFFormat) = savegexf(io, g, gname)
+
+end

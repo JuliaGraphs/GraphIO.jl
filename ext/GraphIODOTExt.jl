@@ -1,21 +1,35 @@
-using .ParserCombinator.Parsers
+module GraphIODOTExt
 
-function savedot(io::IO, g::Graphs.AbstractGraph, gname::String = "")
-    isdir = Graphs.is_directed(g)
+using Graphs
+import Graphs: loadgraph, loadgraphs, savegraph
+
+@static if isdefined(Base, :get_extension)
+    using GraphIO
+    using ParserCombinator
+    import GraphIO.DOT.DOTFormat
+else # not required for julia >= v1.9
+    using ..GraphIO
+    using ..ParserCombinator
+    import ..GraphIO.DOT.DOTFormat
+end
+
+
+function savedot(io::IO, g::AbstractGraph, gname::String = "")
+    isdir = is_directed(g)
     println(io,(isdir ? "digraph " : "graph ") * gname * " {")
-    for i in Graphs.vertices(g)
+    for i in vertices(g)
          println(io,"\t" * string(i))
     end
     if isdir
-        for u in Graphs.vertices(g)
-            out_nbrs = Graphs.outneighbors(g, u)
+        for u in vertices(g)
+            out_nbrs = outneighbors(g, u)
             length(out_nbrs) == 0 && continue
             println(io, "\t" * string(u) * " -> {" * join(out_nbrs,',') * "}")
         end
     else
-        for e in Graphs.edges(g)
-            source = string(Graphs.src(e))
-            dest = string(Graphs.dst(e))
+        for e in edges(g)
+            source = string(src(e))
+            dest = string(dst(e))
             println(io, "\t" * source * " -- " * dest)
         end
     end
@@ -36,9 +50,9 @@ function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     nvg = length(Parsers.DOT.nodes(pg))
     nodedict = Dict(zip(collect(Parsers.DOT.nodes(pg)), 1:nvg))
     if isdir
-        g = Graphs.DiGraph(nvg)
+        g = DiGraph(nvg)
     else
-        g = Graphs.Graph(nvg)
+        g = Graph(nvg)
     end
     for es in Parsers.DOT.edges(pg)
         s = nodedict[es[1]]
@@ -74,3 +88,5 @@ loadgraph(io::IO, gname::String, ::DOTFormat) = loaddot(io, gname)
 loadgraphs(io::IO, ::DOTFormat) = loaddot_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::DOTFormat) = savedot(io, g, gname)
 savegraph(io::IO, d::Dict, ::DOTFormat) = savedot_mult(io, d)
+
+end

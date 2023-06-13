@@ -1,8 +1,22 @@
-using .EzXML
+module GraphIOGraphMLExt
+
+using Graphs
+import Graphs: loadgraph, loadgraphs, savegraph
+
+@static if isdefined(Base, :get_extension)
+    using GraphIO
+    using EzXML
+    import GraphIO.GraphML.GraphMLFormat
+else # not required for julia >= v1.9
+    using ..GraphIO
+    using ..EzXML
+    import ..GraphIO.GraphML.GraphMLFormat
+end
+
 
 function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
     nodes = Dict{String,Int}()
-    xedges = Vector{Graphs.Edge}()
+    xedges = Vector{Edge}()
     nodeid = 1
     for typ in reader
         if typ == EzXML.READER_ELEMENT
@@ -13,13 +27,13 @@ function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
             elseif elname == "edge"
                 src = reader["source"]
                 tar = reader["target"]
-                push!(xedges, Graphs.Edge(nodes[src], nodes[tar]))
+                push!(xedges, Edge(nodes[src], nodes[tar]))
             else
                 @warn "Skipping unknown node '$(elname)' - further warnings will be suppressed" maxlog=1 _id=:unknode
             end
         end
     end
-    g = (isdirected ? Graphs.DiGraph : Graphs.Graph)(length(nodes))
+    g = (isdirected ? DiGraph : Graph)(length(nodes))
     for edge in xedges
         add_edge!(g, edge)
     end
@@ -58,7 +72,7 @@ end
 
 function loadgraphml_mult(io::IO)
     reader = EzXML.StreamReader(io)
-    graphs = Dict{String,Graphs.AbstractGraph}()
+    graphs = Dict{String,AbstractGraph}()
     for typ in reader
         if typ == EzXML.READER_ELEMENT
             elname = EzXML.nodename(reader)
@@ -101,7 +115,7 @@ function savegraphml_mult(io::IO, graphs::Dict)
         end
 
         m = 0
-        for e in Graphs.edges(g)
+        for e in edges(g)
             xe = addelement!(xg, "edge")
             xe["id"] = "e$m"
             xe["source"] = "n$(src(e)-1)"
@@ -113,7 +127,7 @@ function savegraphml_mult(io::IO, graphs::Dict)
     return length(graphs)
 end
 
-savegraphml(io::IO, g::Graphs.AbstractGraph, gname::String) =
+savegraphml(io::IO, g::AbstractGraph, gname::String) =
     savegraphml_mult(io, Dict(gname => g))
 
 
@@ -121,3 +135,5 @@ loadgraph(io::IO, gname::String, ::GraphMLFormat) = loadgraphml(io, gname)
 loadgraphs(io::IO, ::GraphMLFormat) = loadgraphml_mult(io)
 savegraph(io::IO, g::AbstractGraph, gname::String, ::GraphMLFormat) = savegraphml(io, g, gname)
 savegraph(io::IO, d::Dict, ::GraphMLFormat) = savegraphml_mult(io, d)
+
+end
