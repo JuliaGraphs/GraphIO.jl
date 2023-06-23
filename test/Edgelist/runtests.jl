@@ -8,4 +8,3 @@ using GraphIO.EdgeList: IntEdgeListFormat
         readback_test(IntEdgeListFormat(), g)
     end
 end
-

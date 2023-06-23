@@ -11,7 +11,6 @@ import Graphs: loadgraph, loadgraphs, savegraph
 
 export CDFFormat
 
-
 struct CDFFormat <: AbstractGraphFormat end
 
 function _loadcdf(io::IO)
