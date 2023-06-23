@@ -13,7 +13,6 @@ else # not required for julia >= v1.9
     import ..GraphIO.GEXF.GEXFFormat
 end
 
-
 """
     savegexf(f, g, gname)
 

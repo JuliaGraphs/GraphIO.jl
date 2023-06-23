@@ -13,18 +13,17 @@ else # not required for julia >= v1.9
     import ..GraphIO.DOT.DOTFormat
 end
 
-
-function savedot(io::IO, g::AbstractGraph, gname::String = "")
+function savedot(io::IO, g::AbstractGraph, gname::String="")
     isdir = is_directed(g)
-    println(io,(isdir ? "digraph " : "graph ") * gname * " {")
+    println(io, (isdir ? "digraph " : "graph ") * gname * " {")
     for i in vertices(g)
-         println(io,"\t" * string(i))
+        println(io, "\t" * string(i))
     end
     if isdir
         for u in vertices(g)
             out_nbrs = outneighbors(g, u)
             length(out_nbrs) == 0 && continue
-            println(io, "\t" * string(u) * " -> {" * join(out_nbrs,',') * "}")
+            println(io, "\t" * string(u) * " -> {" * join(out_nbrs, ',') * "}")
         end
     else
         for e in edges(g)
@@ -33,7 +32,7 @@ function savedot(io::IO, g::AbstractGraph, gname::String = "")
             println(io, "\t" * source * " -- " * dest)
         end
     end
-    println(io,"}")
+    println(io, "}")
     return 1
 end
 
@@ -62,16 +61,20 @@ function _dot_read_one_graph(pg::Parsers.DOT.Graph)
     return g
 end
 
-_name(pg::Parsers.DOT.Graph) =
-    pg.id !== nothing ? pg.id.id :
-    Parsers.DOT.StringID(pg.directed ? "digraph" : "graph")
+function _name(pg::Parsers.DOT.Graph)
+    return if pg.id !== nothing
+        pg.id.id
+    else
+        Parsers.DOT.StringID(pg.directed ? "digraph" : "graph")
+    end
+end
 
 function loaddot(io::IO, gname::String)
     p = Parsers.DOT.parse_dot(read(io, String))
     for pg in p
         _name(pg) == gname && return _dot_read_one_graph(pg)
     end
-    error("Graph $gname not found")
+    return error("Graph $gname not found")
 end
 
 function loaddot_mult(io::IO)

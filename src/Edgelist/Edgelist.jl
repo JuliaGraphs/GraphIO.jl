@@ -12,7 +12,6 @@ import Graphs: loadgraph, loadgraphs, savegraph
 
 export EdgeListFormat
 
-
 struct EdgeListFormat <: AbstractGraphFormat end
 
 function loadedgelist(io::IO, gname::String)
@@ -50,7 +49,9 @@ end
 
 loadgraph(io::IO, gname::String, ::EdgeListFormat) = loadedgelist(io, gname)
 loadgraphs(io::IO, ::EdgeListFormat) = Dict("graph" => loadedgelist(io, "graph"))
-savegraph(io::IO, g::AbstractGraph, gname::String, ::EdgeListFormat) = saveedgelist(io, g, gname)
+function savegraph(io::IO, g::AbstractGraph, gname::String, ::EdgeListFormat)
+    return saveedgelist(io, g, gname)
+end
 
 include("IntEdgeList.jl")
 

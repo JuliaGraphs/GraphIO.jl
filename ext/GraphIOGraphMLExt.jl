@@ -13,7 +13,6 @@ else # not required for julia >= v1.9
     import ..GraphIO.GraphML.GraphMLFormat
 end
 
-
 function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
     nodes = Dict{String,Int}()
     xedges = Vector{Edge}()
@@ -29,7 +28,8 @@ function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
                 tar = reader["target"]
                 push!(xedges, Edge(nodes[src], nodes[tar]))
             else
-                @warn "Skipping unknown node '$(elname)' - further warnings will be suppressed" maxlog=1 _id=:unknode
+                @warn "Skipping unknown node '$(elname)' - further warnings will be suppressed" maxlog =
+                    1 _id = :unknode
             end
         end
     end
@@ -49,9 +49,13 @@ function loadgraphml(io::IO, gname::String)
                 # ok
             elseif elname == "graph"
                 edgedefault = reader["edgedefault"]
-                directed = edgedefault == "directed"   ? true :
-                           edgedefault == "undirected" ? false :
-                           error("Unknown value of edgedefault: $edgedefault")
+                directed = if edgedefault == "directed"
+                    true
+                elseif edgedefault == "undirected"
+                    false
+                else
+                    error("Unknown value of edgedefault: $edgedefault")
+                end
                 if haskey(reader, "id")
                     graphname = reader["id"]
                 else
@@ -63,11 +67,12 @@ function loadgraphml(io::IO, gname::String)
             elseif elname == "node" || elname == "edge"
                 # ok
             else
-                @warn "Skipping unknown XML element '$(elname)' - further warnings will be suppressed" maxlog=1 _id=:unkel
+                @warn "Skipping unknown XML element '$(elname)' - further warnings will be suppressed" maxlog =
+                    1 _id = :unkel
             end
         end
     end
-    error("Graph $gname not found")
+    return error("Graph $gname not found")
 end
 
 function loadgraphml_mult(io::IO)
@@ -80,9 +85,13 @@ function loadgraphml_mult(io::IO)
                 # ok
             elseif elname == "graph"
                 edgedefault = reader["edgedefault"]
-                directed = edgedefault == "directed"   ? true :
-                           edgedefault == "undirected" ? false :
-                           error("Unknown value of edgedefault: $edgedefault")
+                directed = if edgedefault == "directed"
+                    true
+                elseif edgedefault == "undirected"
+                    false
+                else
+                    error("Unknown value of edgedefault: $edgedefault")
+                end
                 if haskey(reader, "id")
                     graphname = reader["id"]
                 else
@@ -90,7 +99,8 @@ function loadgraphml_mult(io::IO)
                 end
                 graphs[graphname] = _graphml_read_one_graph(reader, directed)
             else
-                @warn "Skipping unknown XML element '$(elname)' - further warnings will be suppressed" maxlog=1 _id=:unkelmult
+                @warn "Skipping unknown XML element '$(elname)' - further warnings will be suppressed" maxlog =
+                    1 _id = :unkelmult
             end
         end
     end
@@ -127,13 +137,15 @@ function savegraphml_mult(io::IO, graphs::Dict)
     return length(graphs)
 end
 
-savegraphml(io::IO, g::AbstractGraph, gname::String) =
-    savegraphml_mult(io, Dict(gname => g))
-
+function savegraphml(io::IO, g::AbstractGraph, gname::String)
+    return savegraphml_mult(io, Dict(gname => g))
+end
 
 loadgraph(io::IO, gname::String, ::GraphMLFormat) = loadgraphml(io, gname)
 loadgraphs(io::IO, ::GraphMLFormat) = loadgraphml_mult(io)
-savegraph(io::IO, g::AbstractGraph, gname::String, ::GraphMLFormat) = savegraphml(io, g, gname)
+function savegraph(io::IO, g::AbstractGraph, gname::String, ::GraphMLFormat)
+    return savegraphml(io, g, gname)
+end
 savegraph(io::IO, d::Dict, ::GraphMLFormat) = savegraphml_mult(io, d)
 
 end

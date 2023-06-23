@@ -1,13 +1,12 @@
 module NET
 
-import Graphs
+using Graphs: Graphs
 using Graphs
 using Graphs: AbstractGraphFormat
 
 import Graphs: loadgraph, loadgraphs, savegraph
 
 export NETFormat
-
 
 struct NETFormat <: AbstractGraphFormat end
 """
@@ -16,7 +15,7 @@ struct NETFormat <: AbstractGraphFormat end
 Write a graph `g` to an IO stream `io` in the [Pajek NET](http://gephi.github.io/users/supported-graph-formats/pajek-net-format/)
 format. Return 1 (number of graphs written).
 """
-function savenet(io::IO, g::Graphs.AbstractGraph, gname::String = "g")
+function savenet(io::IO, g::Graphs.AbstractGraph, gname::String="g")
     println(io, "*Vertices $(nv(g))")
     # write edges
     if is_directed(g)
@@ -36,7 +35,7 @@ end
 Read a graph from IO stream `io` in the [Pajek NET](http://gephi.github.io/users/supported-graph-formats/pajek-net-format/)
 format. Return the graph.
 """
-function loadnet(io::IO, gname::String = "graph")
+function loadnet(io::IO, gname::String="graph")
     line = readline(io)
     # skip comments
     while startswith(line, "%")
@@ -55,7 +54,7 @@ function loadnet(io::IO, gname::String = "graph")
     while occursin(r"^\*Arcs", line)
         for ioline in eachline(io)
             line = ioline
-            ms = collect(m.match for m in eachmatch(r"\d+", line, overlap=false))
+            ms = collect(m.match for m in eachmatch(r"\d+", line; overlap=false))
             length(ms) < 2 && break
             add_edge!(g, parse(Int, ms[1]), parse(Int, ms[2]))
         end
@@ -63,7 +62,7 @@ function loadnet(io::IO, gname::String = "graph")
     while occursin(r"^\*Edges", line) # add edges in both directions
         for ioline in eachline(io)
             line = ioline
-            ms = collect(m.match for m in eachmatch(r"\d+", line, overlap=false))
+            ms = collect(m.match for m in eachmatch(r"\d+", line; overlap=false))
             length(ms) < 2 && break
             i1, i2 = parse(Int, ms[1]), parse(Int, ms[2])
             add_edge!(g, i1, i2)

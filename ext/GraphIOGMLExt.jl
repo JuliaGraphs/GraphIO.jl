@@ -13,7 +13,6 @@ else # not required for julia >= v1.9
     import ..GraphIO.GML.GMLFormat
 end
 
-
 function _gml_read_one_graph(gs, dir)
     nodes = [x[:id] for x in gs[:node]]
     if dir
@@ -40,7 +39,7 @@ function loadgml(io::IO, gname::String)
 
         (gname == graphname) && return _gml_read_one_graph(gs, dir)
     end
-    error("Graph $gname not found")
+    return error("Graph $gname not found")
 end
 
 function loadgml_mult(io::IO)
@@ -60,12 +59,12 @@ end
 Write a graph `g` with name `gname` to an IO stream `io` in the
 [GML](https://en.wikipedia.org/wiki/Graph_Modelling_Language) format. Return 1.
 """
-function savegml(io::IO, g::AbstractGraph, gname::String = "")
+function savegml(io::IO, g::AbstractGraph, gname::String="")
     println(io, "graph")
     println(io, "[")
     length(gname) > 0 && println(io, "label \"$gname\"")
     is_directed(g) && println(io, "directed 1")
-    for i = 1:nv(g)
+    for i in 1:nv(g)
         println(io, "\tnode")
         println(io, "\t[")
         println(io, "\t\tid $i")
@@ -82,7 +81,6 @@ function savegml(io::IO, g::AbstractGraph, gname::String = "")
     println(io, "]")
     return 1
 end
-
 
 """
     savegml_mult(io, graphs)

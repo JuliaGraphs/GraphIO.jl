@@ -20,4 +20,3 @@ using GraphIO.Graph6
     read_test_mult(Graph6Format(), graphs, f)
     rm(f)
 end
-

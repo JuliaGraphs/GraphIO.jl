@@ -8,5 +8,3 @@ using GraphIO.NET
     fname = joinpath(testdir, "testdata", "kinship.net")
     @test length(loadgraphs(fname, NETFormat())) == 1
 end
-
-
