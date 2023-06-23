@@ -2,6 +2,9 @@ module GraphIO
 
 @static if !isdefined(Base, :get_extension)
     using Requires
+end
+
+@static if !isdefined(Base, :get_extension)
     function __init__()
         @require CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193" begin
             include("../ext/GraphIOLGCompressedExt.jl")

@@ -15,8 +15,11 @@ include("graphio.jl")
 # write your own tests here
 @testset verbose = true "GraphIO" begin
     @testset "Code quality" begin
-        Aqua.test_all(GraphIO; stale_deps=false)
+        Aqua.test_all(GraphIO; stale_deps=false, project_toml_formatting=false)
         Aqua.test_stale_deps(GraphIO; ignore=[:Requires])
+        if VERSION >= v"1.9"
+            Aqua.test_project_toml_formatting(packages)
+        end
     end
     @testset "Code formatting" begin
         @test JuliaFormatter.format(GraphIO; verbose=false, overwrite=false)
