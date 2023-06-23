@@ -9,8 +9,6 @@ import Graphs: loadgraph, loadgraphs, savegraph
 export GraphMLFormat
 
 
-# TODO: implement writing a dict of graphs
-
 struct GraphMLFormat <: AbstractGraphFormat end
 
 function _graphml_read_one_graph(reader::EzXML.StreamReader, isdirected::Bool)
