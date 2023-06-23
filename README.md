@@ -31,14 +31,21 @@ graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat()
 ``` 
 
 ## Reading different graph types
-All `*Format` types are readily available. However, in order to use some of them to `loadgraph` further dependencies are needed, which you need to load with `using` in advance.
+
+All `*Format` types are readily accessible.
+However, in order to use some of them with `loadgraph`, additional packages are required.
+You may thus need to install and load the following dependencies before using parts of GraphIO.jl:
 - Reading [DOT] or [GML] files: do `using ParserCombinator`
 - Reading [GEXF] or [GraphML] files: do `using EzXML`
 - Reading [GML] files: do `using CodecZlib`
 
 The current design avoids populating your environment with unnecessary dependencies.
 
-> **_IMPLEMENTATION NOTE:_**  The current design uses package extensions introduced in Julia v1.9. At the moment, package extensions cannot conditionally load types; that's one of the main reasons why all `*Format` types are readily accesible. However, the functionality of `loadgraph` is extended for the various types only when the appropriate dependencies are available. We are searching for more intuitive ways to interface this functionality.
+> **_IMPLEMENTATION NOTE:_**
+> The current design uses package extensions, introduced in Julia v1.9.
+> At the moment, package extensions cannot conditionally load types, that is one of the main reasons why all `*Format` types are readily accessible. 
+> However, the functionality of `loadgraph` is extended for the various types only when the appropriate dependencies are available.
+> We are searching for more intuitive ways to design this interface.
 
 [CDF]: http://www2.ee.washington.edu/research/pstca/formats/cdf.txt
 [GML]: https://en.wikipedia.org/wiki/Graph_Modelling_Language
