@@ -7,24 +7,17 @@ GraphIO provides support to [Graphs.jl](https://github.com/JuliaGraphs/Graphs.jl
 
 Currently, the following functionality is provided:
 
-Format        | Read | Write | Multiple Graphs| Format Name  |
---------------|------|-------|----------------|--------------|
-[EdgeList]    |   ✓  |  ✓    |                |EdgeListFormat|
-[GML]         |   ✓  |  ✓    | ✓              |GMLFormat     |
-[Graph6]      |   ✓  |  ✓    | ✓              |Graph6Format  |
-[GraphML]     |   ✓  |  ✓    | ✓              |GraphMLFormat |
-[Pajek NET]   |   ✓  |  ✓    |                |NETFormat     |
-[GEXF]        |      |  ✓    |                |GEXFFormat    |
-[DOT]         |   ✓  |       | ✓              |DOTFormat     |
-[CDF]         |   ✓  |       |                |CDFFormat     |
+| Format      | Read | Write | Multiple Graphs | Format Name    | Comment                                                                                     |
+| ----------- | ---- | ----- | --------------- | -------------- | ------------------------------------------------------------------------------------------- |
+| EdgeList    | ✓    | ✓     |                 | EdgeListFormat | a simple list of sources and dests separated by whitespace and/or comma, one pair per line. |
+| [GML]       | ✓    | ✓     | ✓               | GMLFormat      |                                                                                             |
+| [Graph6]    | ✓    | ✓     | ✓               | Graph6Format   |                                                                                             |
+| [GraphML]   | ✓    | ✓     | ✓               | GraphMLFormat  |                                                                                             |
+| [Pajek NET] | ✓    | ✓     |                 | NETFormat      |                                                                                             |
+| [GEXF]      |      | ✓     |                 | GEXFFormat     |                                                                                             |
+| [DOT]       | ✓    |       | ✓               | DOTFormat      |                                                                                             |
+| [CDF]       | ✓    |       |                 | CDFFormat      |                                                                                             |
 
-[EdgeList]: a simple list of sources and dests separated by whitespace and/or comma, one pair per line. \
-[GML]: https://en.wikipedia.org/wiki/Graph_Modelling_Language \
-[Graph6]: https://users.cecs.anu.edu.au/~bdm/data/formats.html \
-[GraphML]: https://en.wikipedia.org/wiki/GraphML \
-[Pajek NET]: https://gephi.org/users/supported-graph-formats/pajek-net-format/ \
-[GEXF]: https://gephi.org/gexf/format/ \
-[DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language) \
 
 Graphs are read using either the `loadgraph` function or, for formats that support multiple graphs in a single file,
 the `loadgraphs` functions. `loadgraph` returns a Graph object, while `loadgraphs` returns a dictionary of Graph objects.
@@ -45,3 +38,10 @@ The current design avoids populating your environment with unnecessary dependenc
 
 > **_IMPLEMENTATION NOTE:_**  The current design uses package extensions introduced in Julia v1.9. At the moment, package extensions cannot conditionally load types; that's one of the main reasons why all `*Format` types are readily accesible. However, the functionality of `loadgraph` is extended for the various types only when the appropriate dependencies are available. We are searching for more intuitive ways to interface this functionality.
 
+[CDF]: http://www2.ee.washington.edu/research/pstca/formats/cdf.txt
+[GML]: https://en.wikipedia.org/wiki/Graph_Modelling_Language
+[Graph6]: https://users.cecs.anu.edu.au/~bdm/data/formats.html
+[GraphML]: https://en.wikipedia.org/wiki/GraphML
+[Pajek NET]: https://gephi.org/users/supported-graph-formats/pajek-net-format/
+[GEXF]: https://gephi.org/gexf/format/
+[DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
