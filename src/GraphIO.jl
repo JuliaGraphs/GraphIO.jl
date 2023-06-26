@@ -12,6 +12,9 @@ end
         @require EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615" begin
             include("../ext/GraphIOGEXFExt.jl")
             include("../ext/GraphIOGraphMLExt.jl")
+            @require MetaGraphs = "626554b9-1ddb-594c-aa3c-2596fe9399a5" begin
+                include("../ext/GraphIOMetaGraphsGraphMLExt.jl")
+            end
         end
         @require ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46" begin
             include("../ext/GraphIODOTExt.jl")

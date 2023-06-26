@@ -9,17 +9,19 @@ GraphIO provides support to [Graphs.jl](https://github.com/JuliaGraphs/Graphs.jl
 
 Currently, the following functionality is provided:
 
-| Format      | Read | Write | Multiple Graphs | Format Name    | Comment                                                                                     |
-| ----------- | ---- | ----- | --------------- | -------------- | ------------------------------------------------------------------------------------------- |
-| EdgeList    | ✓    | ✓     |                 | EdgeListFormat | a simple list of sources and dests separated by whitespace and/or comma, one pair per line. |
-| [GML]       | ✓    | ✓     | ✓               | GMLFormat      |                                                                                             |
-| [Graph6]    | ✓    | ✓     | ✓               | Graph6Format   |                                                                                             |
-| [GraphML]   | ✓    | ✓     | ✓               | GraphMLFormat  |                                                                                             |
-| [Pajek NET] | ✓    | ✓     |                 | NETFormat      |                                                                                             |
-| [GEXF]      |      | ✓     |                 | GEXFFormat     |                                                                                             |
-| [DOT]       | ✓    |       | ✓               | DOTFormat      |                                                                                             |
-| [CDF]       | ✓    |       |                 | CDFFormat      |                                                                                             |
+| Format        | Read | Write | Multiple Graphs | Format Name    | Simple(Di)Graph | MetaGraphs.jl |
+| -----------   | ---- | ----- | --------------- | -------------- | --------------- | ------------- |
+| EdgeList [^1] | ✓    | ✓     |                 | EdgeListFormat |  ✓              |               |
+| [GML]         | ✓    | ✓     | ✓               | GMLFormat      |  ✓              |               |
+| [Graph6]      | ✓    | ✓     | ✓               | Graph6Format   |  ✓              |               |
+| [GraphML]     | ✓    | ✓     | ✓               | GraphMLFormat  |  ✓              |  ✓            |
+| [Pajek NET]   | ✓    | ✓     |                 | NETFormat      |  ✓              |               |
+| [GEXF]        |      | ✓     |                 | GEXFFormat     |  ✓              |               |
+| [DOT]         | ✓    |       | ✓               | DOTFormat      |  ✓              |               |
+| [CDF]         | ✓    |       |                 | CDFFormat      |  ✓              |               |
 
+
+[^1]: a simple list of sources and dests separated by whitespace and/or comma, one pair per line.
 
 Graphs are read using either the `loadgraph` function or, for formats that support multiple graphs in a single file,
 the `loadgraphs` functions. `loadgraph` returns a Graph object, while `loadgraphs` returns a dictionary of Graph objects.
