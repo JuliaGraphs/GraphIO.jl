@@ -11,6 +11,7 @@ SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 [weakdeps]
 CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
 EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
+MetaGraphs = "626554b9-1ddb-594c-aa3c-2596fe9399a5"
 ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
 
 [extensions]
@@ -19,12 +20,14 @@ GraphIOGEXFExt = "EzXML"
 GraphIOGMLExt = "ParserCombinator"
 GraphIOGraphMLExt = "EzXML"
 GraphIOLGCompressedExt = "CodecZlib"
+GraphIOMetaGraphsGraphMLExt = ["EzXML", "MetaGraphs"]
 
 [compat]
 CodecZlib = "0.7"
 DelimitedFiles = "1"
 EzXML = "1"
 Graphs = "1.4"
+MetaGraphs = "0.7.2"
 ParserCombinator = "2.1"
 Requires = "1"
 SimpleTraits = "0.9"
@@ -36,8 +39,9 @@ CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
 EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
+MetaGraphs = "626554b9-1ddb-594c-aa3c-2596fe9399a5"
 ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Aqua", "CodecZlib", "Graphs", "JuliaFormatter", "EzXML", "ParserCombinator", "Test"]
+test = ["Aqua", "CodecZlib", "Graphs", "JuliaFormatter", "EzXML", "ParserCombinator", "Test", "MetaGraphs"]

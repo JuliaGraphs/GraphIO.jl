@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+	 http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+	<key attr.name="ycoord" attr.type="double" for="node" id="ycoord" />
+	<key attr.name="xcoord" attr.type="double" for="node" id="xcoord" />
+	<key attr.name="VertexLabel" attr.type="string" for="node" id="VertexLabel" />
+	<key attr.name="LinkLength" attr.type="float" for="edge" id="LinkLength" />
+    <key attr.name="LinkCapacity" attr.type="float" for="edge" id="LinkCapacity">
+        <default>100.0</default>
+    </key>
+	<graph id="main-graph" edgedefault="directed">
+		<node id="N0">
+			<data key="VertexLabel">N0</data>
+			<data key="xcoord">0.0</data>
+			<data key="ycoord">0.0</data>
+		</node>
+		<node id="N1">
+			<data key="VertexLabel">N1</data>
+			<data key="xcoord">10.0</data>
+			<data key="ycoord">100.0</data>
+		</node>
+		<node id="N2">
+			<data key="VertexLabel">N2</data>
+			<data key="xcoord">110.0</data>
+			<data key="ycoord">100.0</data>
+		</node>
+		<node id="N3">
+			<data key="VertexLabel">N3</data>
+			<data key="xcoord">100.0</data>
+			<data key="ycoord">0.0</data>
+		</node>
+		<node id="N4">
+			<data key="VertexLabel">N4</data>
+			<data key="xcoord">20.0</data>
+			<data key="ycoord">200.0</data>
+		</node>
+		<node id="N5">
+			<data key="VertexLabel">N5</data>
+			<data key="xcoord">120.0</data>
+			<data key="ycoord">200.0</data>
+		</node>
+		<node id="N6">
+			<data key="VertexLabel">N6</data>
+			<data key="xcoord">170.0</data>
+			<data key="ycoord">0.0</data>
+		</node>
+		<node id="N7">
+			<data key="VertexLabel">N7</data>
+			<data key="xcoord">230.0</data>
+			<data key="ycoord">-100.0</data>
+		</node>
+		<node id="N8">
+			<data key="VertexLabel">N8</data>
+			<data key="xcoord">260.0</data>
+			<data key="ycoord">140.0</data>
+		</node>
+		<node id="N9">
+			<data key="VertexLabel">N9</data>
+			<data key="xcoord">300.0</data>
+			<data key="ycoord">0.0</data>
+		</node>
+		<node id="N10">
+			<data key="VertexLabel">N10</data>
+			<data key="xcoord">310.0</data>
+			<data key="ycoord">200.0</data>
+		</node>
+		<edge id="N0-N1" source="N0" target="N1"/>
+		<edge id="N1-N0" source="N1" target="N0"/>
+
+		<edge id="N0-N3" source="N0" target="N3"/>
+		<edge id="N3-N0" source="N3" target="N0"/>
+
+		<edge id="N1-N2" source="N1" target="N2"/>
+		<edge id="N2-N1" source="N2" target="N1"/>
+
+		<edge id="N1-N4" source="N1" target="N4"/>
+		<edge id="N4-N1" source="N4" target="N1"/>
+
+		<edge id="N2-N3" source="N2" target="N3"/>
+		<edge id="N3-N2" source="N3" target="N2"/>
+
+		<edge id="N2-N5" source="N2" target="N5"/>
+		<edge id="N5-N2" source="N5" target="N2"/>
+
+		<edge id="N2-N6" source="N2" target="N6"/>
+		<edge id="N6-N2" source="N6" target="N2"/>
+
+		<edge id="N2-N8" source="N2" target="N8"/>
+		<edge id="N8-N2" source="N8" target="N2"/>
+
+		<edge id="N3-N6" source="N3" target="N6"/>
+		<edge id="N6-N3" source="N6" target="N3"/>
+
+		<edge id="N3-N7" source="N3" target="N7"/>
+		<edge id="N7-N3" source="N7" target="N3"/>
+
+		<edge id="N4-N5" source="N4" target="N5"/>
+		<edge id="N5-N4" source="N5" target="N4"/>
+
+		<edge id="N5-N10" source="N5" target="N10"/>
+		<edge id="N10-N5" source="N10" target="N5"/>
+
+		<edge id="N6-N9" source="N6" target="N9"/>
+		<edge id="N9-N6" source="N9" target="N6"/>
+
+		<edge id="N7-N9" source="N7" target="N9"/>
+		<edge id="N9-N7" source="N9" target="N7"/>
+
+		<edge id="N8-N9" source="N8" target="N9"/>
+		<edge id="N9-N8" source="N9" target="N8"/>
+
+		<edge id="N9-N10" source="N9" target="N10"/>
+		<edge id="N10-N9" source="N10" target="N9"/>
+	</graph>
+	<graph id="main-graph-2" edgedefault="undirected">
+		<node id="N0">
+			<data key="VertexLabel">N0</data>
+			<data key="xcoord">0.0</data>
+			<data key="ycoord">0.0</data>
+		</node>
+		<node id="N1">
+			<data key="VertexLabel">N1</data>
+			<data key="xcoord">10.0</data>
+			<data key="ycoord">100.0</data>
+		</node>
+		<node id="N2">
+			<data key="VertexLabel">N2</data>
+			<data key="xcoord">110.0</data>
+			<data key="ycoord">100.0</data>
+		</node>
+		<node id="N3">
+			<data key="VertexLabel">N3</data>
+			<data key="xcoord">100.0</data>
+			<data key="ycoord">0.0</data>
+		</node>
+		<edge id="N0-N1" source="N0" target="N1"/>
+		<edge id="N0-N3" source="N0" target="N3"/>
+		<edge id="N1-N2" source="N1" target="N2"/>
+	</graph>
+</graphml>
