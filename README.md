@@ -27,6 +27,8 @@ the `loadgraphs` functions. `loadgraph` returns a Graph object, while `loadgraph
 For example, an edgelist file could be loaded as:
 
 ```julia
+using GraphIO.EdgeList, Graphs
+
 graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
 ``` 
 
