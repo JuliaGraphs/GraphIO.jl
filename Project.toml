@@ -14,20 +14,21 @@ EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
 
 [extensions]
-GraphIODOTExt = "ParserCombinator"
-GraphIOGEXFExt = "EzXML"
-GraphIOGMLExt = "ParserCombinator"
-GraphIOGraphMLExt = "EzXML"
+GraphIOParserCombinator = "ParserCombinator"
+GraphIOXML = "EzXML"
 GraphIOLGCompressedExt = "CodecZlib"
 
 [compat]
+Aqua = "0.8"
 CodecZlib = "0.7"
 DelimitedFiles = "1"
 EzXML = "1"
 Graphs = "1.4"
+JuliaFormatter = "1.0"
 ParserCombinator = "2.1"
 Requires = "1"
 SimpleTraits = "0.9"
+Test = "1"
 julia = "1"
 
 [extras]
