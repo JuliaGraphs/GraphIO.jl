@@ -3,17 +3,10 @@ module GraphIOParserCombinator
 using Graphs
 import Graphs: loadgraph, loadgraphs, savegraph
 
-@static if isdefined(Base, :get_extension)
-    using GraphIO
-    using ParserCombinator
-    import GraphIO.DOT.DOTFormat
-    import GraphIO.GML.GMLFormat
-else # not required for julia >= v1.9
-    using ..GraphIO
-    using ..ParserCombinator
-    import ..GraphIO.DOT.DOTFormat
-    import ..GraphIO.GML.GMLFormat
-end
+using GraphIO
+using ParserCombinator
+import GraphIO.DOT.DOTFormat
+import GraphIO.GML.GMLFormat
 
 function savedot(io::IO, g::AbstractGraph, gname::String="")
     isdir = is_directed(g)

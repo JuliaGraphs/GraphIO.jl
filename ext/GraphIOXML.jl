@@ -3,17 +3,10 @@ module GraphIOXML
 using Graphs
 import Graphs: loadgraph, loadgraphs, savegraph, AbstractGraph
 
-@static if isdefined(Base, :get_extension)
-    using GraphIO
-    using EzXML
-    import GraphIO.GEXF.GEXFFormat
-    import GraphIO.GraphML.GraphMLFormat
-else # not required for julia >= v1.9
-    using ..GraphIO
-    using ..EzXML
-    import ..GraphIO.GEXF.GEXFFormat
-    import ..GraphIO.GraphML.GraphMLFormat
-end
+using GraphIO
+using EzXML
+import GraphIO.GEXF.GEXFFormat
+import GraphIO.GraphML.GraphMLFormat
 
 """
     savegexf(f, g, gname)
