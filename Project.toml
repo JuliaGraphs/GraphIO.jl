@@ -1,6 +1,6 @@
 name = "GraphIO"
 uuid = "aa1b3936-2fda-51b9-ab35-c553d3a640a2"
-version = "0.7.0"
+version = "0.7.1"
 
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
