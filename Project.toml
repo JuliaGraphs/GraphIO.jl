@@ -5,7 +5,6 @@ version = "0.7.0"
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
-Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 
 [weakdeps]
@@ -19,17 +18,16 @@ GraphIOXML = "EzXML"
 GraphIOLGCompressedExt = "CodecZlib"
 
 [compat]
-Aqua = "0.8"
+Aqua = "0.8.9"
 CodecZlib = "0.7"
 DelimitedFiles = "1"
 EzXML = "1"
 Graphs = "1.4"
-JuliaFormatter = "1.0"
+JuliaFormatter = "1.0.62"
 ParserCombinator = "2.1"
-Requires = "1"
 SimpleTraits = "0.9"
 Test = "1"
-julia = "1"
+julia = "1.10"
 
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"

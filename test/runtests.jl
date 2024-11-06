@@ -15,8 +15,7 @@ include("graphio.jl")
 # write your own tests here
 @testset verbose = true "GraphIO" begin
     @testset "Code quality" begin
-        Aqua.test_all(GraphIO; stale_deps=false)
-        Aqua.test_stale_deps(GraphIO; ignore=[:Requires])
+        Aqua.test_all(GraphIO)
     end
     @testset "Code formatting" begin
         @test JuliaFormatter.format(GraphIO; verbose=true, overwrite=false)

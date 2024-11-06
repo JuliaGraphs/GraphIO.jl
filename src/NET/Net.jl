@@ -44,14 +44,14 @@ function loadnet(io::IO, gname::String="graph")
     n = parse(Int, match(r"\d+", line).match)
     for ioline in eachline(io)
         line = ioline
-        (occursin(r"^\*Arcs", line) || occursin(r"^\*Edges", line)) && break
+        (occursin(r"^\*[Aa]rcs", line) || occursin(r"^\*[Ee]dges", line)) && break
     end
-    if occursin(r"^\*Arcs", line)
+    if occursin(r"^\*[Aa]rcs", line)
         g = Graphs.DiGraph(n)
     else
         g = Graphs.Graph(n)
     end
-    while occursin(r"^\*Arcs", line)
+    while occursin(r"^\*[Aa]rcs", line)
         for ioline in eachline(io)
             line = ioline
             ms = collect(m.match for m in eachmatch(r"\d+", line; overlap=false))
@@ -59,7 +59,7 @@ function loadnet(io::IO, gname::String="graph")
             add_edge!(g, parse(Int, ms[1]), parse(Int, ms[2]))
         end
     end
-    while occursin(r"^\*Edges", line) # add edges in both directions
+    while occursin(r"^\*[Ee]dges", line) # add edges in both directions
         for ioline in eachline(io)
             line = ioline
             ms = collect(m.match for m in eachmatch(r"\d+", line; overlap=false))

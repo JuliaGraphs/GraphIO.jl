@@ -1,7 +1,7 @@
 # GraphIO
 
 [![Build Status](https://github.com/JuliaGraphs/GraphIO.jl/workflows/CI/badge.svg)](https://github.com/JuliaGraphs/GraphIO.jl/actions?query=workflow%3ACI+branch%3Amaster)
-[![codecov.io](http://codecov.io/github/JuliaGraphs/GraphIO.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaGraphs/GraphIO.jl?branch=master)
+[![codecov](https://codecov.io/github/JuliaGraphs/GraphIO.jl/graph/badge.svg?token=8Vw9q0ofeT)](https://codecov.io/github/JuliaGraphs/GraphIO.jl)
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
@@ -27,6 +27,8 @@ the `loadgraphs` functions. `loadgraph` returns a Graph object, while `loadgraph
 For example, an edgelist file could be loaded as:
 
 ```julia
+using GraphIO.EdgeList, Graphs
+
 graph = loadgraph("path_to_graph/my_edgelist.txt", "graph_key", EdgeListFormat())
 ``` 
 
