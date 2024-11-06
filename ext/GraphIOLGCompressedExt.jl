@@ -3,15 +3,9 @@ module GraphIOLGCompressedExt
 using Graphs
 import Graphs: loadgraph, loadgraphs, savegraph, LGFormat
 
-@static if isdefined(Base, :get_extension)
-    using GraphIO
-    using CodecZlib
-    import GraphIO.LGCompressed.LGCompressedFormat
-else # not required for julia >= v1.9
-    using ..GraphIO
-    using ..CodecZlib
-    import ..GraphIO.LGCompressed.LGCompressedFormat
-end
+using GraphIO
+using CodecZlib
+import GraphIO.LGCompressed.LGCompressedFormat
 
 function savegraph(
     fn::AbstractString, g::AbstractGraph, gname::AbstractString, format::LGCompressedFormat

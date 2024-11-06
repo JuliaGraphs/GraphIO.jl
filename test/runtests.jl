@@ -18,7 +18,7 @@ include("graphio.jl")
         Aqua.test_all(GraphIO)
     end
     @testset "Code formatting" begin
-        @test JuliaFormatter.format(GraphIO; verbose=false, overwrite=false)
+        @test JuliaFormatter.format(GraphIO; verbose=true, overwrite=false)
     end
     for name in modules
         path = joinpath(testdir, name, "runtests.jl")

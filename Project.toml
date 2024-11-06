@@ -13,10 +13,8 @@ EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 ParserCombinator = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
 
 [extensions]
-GraphIODOTExt = "ParserCombinator"
-GraphIOGEXFExt = "EzXML"
-GraphIOGMLExt = "ParserCombinator"
-GraphIOGraphMLExt = "EzXML"
+GraphIOParserCombinator = "ParserCombinator"
+GraphIOXML = "EzXML"
 GraphIOLGCompressedExt = "CodecZlib"
 
 [compat]
