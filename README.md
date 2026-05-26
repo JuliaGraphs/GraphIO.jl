@@ -53,6 +53,6 @@ The current design avoids populating your environment with unnecessary dependenc
 [GML]: https://en.wikipedia.org/wiki/Graph_Modelling_Language
 [Graph6]: https://users.cecs.anu.edu.au/~bdm/data/formats.html
 [GraphML]: https://en.wikipedia.org/wiki/GraphML
-[Pajek NET]: https://gephi.org/users/supported-graph-formats/pajek-net-format/
+[Pajek NET]: https://docs.gephi.org/desktop/User_Manual/Import/Pajek_NET_Format
 [GEXF]: https://gephi.org/gexf/format/
 [DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
