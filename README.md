@@ -54,5 +54,5 @@ The current design avoids populating your environment with unnecessary dependenc
 [Graph6]: https://users.cecs.anu.edu.au/~bdm/data/formats.html
 [GraphML]: https://en.wikipedia.org/wiki/GraphML
 [Pajek NET]: https://docs.gephi.org/desktop/User_Manual/Import/Pajek_NET_Format
-[GEXF]: https://gephi.org/gexf/format/
+[GEXF]: https://docs.gephi.org/desktop/User_Manual/Import/GEXF_File_Format
 [DOT]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
