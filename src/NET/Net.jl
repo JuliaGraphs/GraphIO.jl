@@ -12,7 +12,7 @@ struct NETFormat <: AbstractGraphFormat end
 """
     savenet(io, g, gname="g")
 
-Write a graph `g` to an IO stream `io` in the [Pajek NET](http://gephi.github.io/users/supported-graph-formats/pajek-net-format/)
+Write a graph `g` to an IO stream `io` in the [Pajek NET](https://docs.gephi.org/desktop/User_Manual/Import/Pajek_NET_Format)
 format. Return 1 (number of graphs written).
 """
 function savenet(io::IO, g::Graphs.AbstractGraph, gname::String="g")
@@ -32,7 +32,7 @@ end
 """
     loadnet(io::IO, gname="graph")
 
-Read a graph from IO stream `io` in the [Pajek NET](http://gephi.github.io/users/supported-graph-formats/pajek-net-format/)
+Read a graph from IO stream `io` in the [Pajek NET](https://docs.gephi.org/desktop/User_Manual/Import/Pajek_NET_Format)
 format. Return the graph.
 """
 function loadnet(io::IO, gname::String="graph")
